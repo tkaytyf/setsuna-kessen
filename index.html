@@ -11,10 +11,10 @@
   <link rel="icon" href="favicon.ico" sizes="any" />
   <link rel="icon" href="assets/brand/favicon-32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="assets/brand/favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="icon" href="assets/brand/icon-192.png" type="image/png" sizes="192x192" />
+  <link rel="icon" href="assets/brand/icon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta name="theme-color" content="#010A13" />
-  <!-- Open Graph / Twitter. NOTE: og:image, twitter:image and og:url must be ABSOLUTE URLs
-       (https://your-domain/assets/og.jpg) once the site is deployed; relative paths are placeholders. -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Setsuna Kessen" />
   <meta property="og:title" content="Setsuna Kessen (刹那決戦) — Anime Fighting on Roblox" />
@@ -36,8 +36,8 @@
   <!-- Site-wide placeholder notice -->
   <div class="ph-banner" role="note">
     <span class="ph-dot"></span>
-    <span class="ph-long">Preview build — characters, abilities, codes, patch notes, stats, art and trailer are <strong>placeholders</strong>.</span>
-    <span class="ph-short">Preview — characters, codes &amp; art are <strong>placeholders</strong>.</span>
+    <span class="ph-long">Preview build — arena screenshots, trailer, patch notes and stats are still <strong>placeholders</strong>.</span>
+    <span class="ph-short">Preview — trailer, patch notes &amp; stats are <strong>placeholders</strong>.</span>
     <button class="ph-banner-close" aria-label="Dismiss notice">×</button>
   </div>
 
@@ -50,12 +50,28 @@
       <a href="#news">News</a>
       <a href="#story">Story</a>
       <a href="#fighters">Fighters</a>
+      <div class="dd">
+        <button class="dd-toggle" aria-expanded="false">Elements <i class="caret"></i></button>
+        <div class="dd-menu">
+          <a href="elements/wind.html">Wind</a>
+          <a href="elements/ice.html">Ice</a>
+          <a href="elements/flame.html">Flame</a>
+          <a href="elements/lightning.html">Lightning</a>
+          <a href="elements/earth.html">Earth</a>
+          <a href="elements/water.html">Water</a>
+          <a href="elements/shadow.html">Shadow</a>
+          <a href="elements/light.html">Light</a>
+          <a href="elements/metal.html">Metal</a>
+          <a href="elements/nature.html">Nature</a>
+        </div>
+      </div>
       <a href="#howtoplay">How to Play</a>
       <div class="dd">
         <button class="dd-toggle" aria-expanded="false">Game <i class="caret"></i></button>
         <div class="dd-menu">
           <a href="#modes">Game modes</a>
           <a href="#arenas">Arenas</a>
+          <a href="#wallpapers">Wallpapers</a>
           <a href="#features">Features</a>
           <a href="#news" data-open-patch="0">Patch notes</a>
           <a href="#" data-open-trailer>Trailer</a>
@@ -108,10 +124,7 @@
       <div class="wrap">
         <div class="blade-head">
           <h2 class="h-section">Featured News</h2>
-          <div class="blade-head-right">
-            <span class="ph-inline">Placeholder news</span>
-            <button class="link-arrow" data-open-patch="0">View all <i>→</i></button>
-          </div>
+          <div class="blade-head-right"></div>
         </div>
         <div class="news-rail" id="newsRail"></div>
         <div class="rail-ctrl">
@@ -174,6 +187,7 @@
           <div class="rs-chips" id="rosterChips" role="group" aria-label="Filter by element"></div>
         </div>
         <p class="rs-count" id="rosterCount" aria-live="polite">Showing 100 fighters</p>
+        <p class="rs-el-link" id="rosterElLink" hidden></p>
         <div class="rs-grid" id="rosterGrid"></div>
         <div class="rs-more-wrap"><button type="button" class="btn btn-gold rs-more" id="rosterMore" aria-controls="rosterGrid" aria-expanded="false">Show all 100 fighters</button></div>
         <p class="rs-empty" id="rosterEmpty" hidden>No fighters match that search. <button type="button" id="rosterReset">Clear filters</button></p>
@@ -211,13 +225,13 @@
         <div class="split-text">
           <p class="kicker reveal">Multiple ways to</p>
           <h2 class="h-blade reveal">Fight</h2>
-          <p class="blade-copy reveal">Quick duels, team clashes, battle royale or co-op raids — pick the arena that fits your squad and your mood.</p>
+          <p class="blade-copy reveal">Ranked 1v1, 3v3 and 5v5 online, plus an open-city free-for-all in Aurel Bay — pick the fight that fits your squad.</p>
           <div class="btn-row reveal"><a href="#" class="btn btn-primary" data-roblox>Play now</a></div>
           <div class="mode-tabs reveal" id="modeTabs" role="tablist" aria-label="Game modes"></div>
         </div>
         <div class="split-media">
           <div class="ring-stage ring-stage-mode" id="modeStage">
-            <span class="ph-tag">Placeholder art</span>
+            <span class="ph-tag" id="modeArtTag">Concept art</span>
             <div class="ring ring-gold"><svg viewBox="0 0 100 100" class="ring-arc"><circle cx="50" cy="50" r="49" /></svg></div>
             <div class="ring-disc" id="modeArt"></div>
           </div>
@@ -250,25 +264,138 @@
       </div>
     </section>
 
-    <!-- ============ 4. CODES & REWARDS (media promo blade) ============ -->
-    <section class="blade dark promo" id="codes">
+    <!-- ============ 4. CODES & REWARDS ============ -->
+    <section class="blade dark promo rewards-blade" id="codes">
       <div class="promo-bg" aria-hidden="true" data-parallax="0.12"></div>
-      <div class="wrap split promo-split">
-        <div class="diamond-stage reveal" aria-hidden="true">
-          <div class="diamond"></div>
-          <div class="diamond-art" id="promoArt"></div>
-          <span class="ph-tag">Placeholder art</span>
-        </div>
+      <div class="wrap rewards-layout">
+        <figure class="rewards-art reveal" id="rewardsArt">
+          <div class="art-fallback" aria-hidden="true">Art coming soon</div>
+          <img src="assets/rewards-hero.webp" alt="Original concept art: a fighter in navy and gold, with gems, coins, a scarf and a title banner" width="1280" height="720" decoding="async">
+          <span class="ph-tag" id="rewardsArtTag" data-ok="Concept art" data-miss="Art coming soon">Concept art</span>
+        </figure>
         <div class="promo-text">
           <p class="kicker kicker-italic reveal">Claim your</p>
           <h2 class="h-blade reveal">Rewards</h2>
-          <p class="blade-copy reveal">Redeem codes in-game from the <strong>Codes</strong> menu for gems, boosts and cosmetics. Tap a code to copy it. <span class="ph-inline ph-inline-dark">Placeholder codes — not redeemable</span></p>
+          <p class="blade-copy reveal">Redeem codes from the in-game <strong>Codes</strong> menu for gems and cosmetics. The menu is coming at launch — tap a code to copy it for then.</p>
           <div class="codes" id="codesList"></div>
+          <p class="codes-note reveal">Redeem all three together to unlock your first skin. Gems buy cosmetics only.</p>
           <a href="#" class="btn btn-primary reveal" data-roblox>Play now</a>
         </div>
       </div>
     </section>
 
+
+        <!-- ============ WALLPAPERS ============ -->
+    <section class="blade dark wallpapers" id="wallpapers">
+      <div class="wrap">
+        <header class="v9-head">
+          <p class="kicker reveal">Take them with you</p>
+          <h2 class="h-blade reveal">Wallpapers</h2>
+          <p class="blade-copy reveal">Nine phone wallpapers from the concept-art roster. Tap download to save one to your device.</p>
+        </header>
+        <div class="wp-grid">
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/00-tovin-rusk.webp" alt="Tovin Rusk phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Tovin Rusk</b>
+              <span>Shardmail</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/00-tovin-rusk-wallpaper.jpg" download="setsuna-kessen-00-tovin-rusk-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/02-tamsin-orel.webp" alt="Tamsin Orel phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Tamsin Orel</b>
+              <span>Wind</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/02-tamsin-orel-wallpaper.jpg" download="setsuna-kessen-02-tamsin-orel-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/10-sael-orin.webp" alt="Sael Orin phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Sael Orin</b>
+              <span>Wind</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/10-sael-orin-wallpaper.jpg" download="setsuna-kessen-10-sael-orin-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/14-nedi-rime.webp" alt="Nedi Rime phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Nedi Rime</b>
+              <span>Ice</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/14-nedi-rime-wallpaper.jpg" download="setsuna-kessen-14-nedi-rime-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/22-sirae-holt.webp" alt="Sirae Holt phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Sirae Holt</b>
+              <span>Flame</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/22-sirae-holt-wallpaper.jpg" download="setsuna-kessen-22-sirae-holt-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/26-jastel-vohl.webp" alt="Jastel Vohl phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Jastel Vohl</b>
+              <span>Flame</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/26-jastel-vohl-wallpaper.jpg" download="setsuna-kessen-26-jastel-vohl-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/69-pixa-noll.webp" alt="Pixa Noll phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Pixa Noll</b>
+              <span>Shadow</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/69-pixa-noll-wallpaper.jpg" download="setsuna-kessen-69-pixa-noll-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/79-tesen-wynn.webp" alt="Tesen Wynn phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Tesen Wynn</b>
+              <span>Light</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/79-tesen-wynn-wallpaper.jpg" download="setsuna-kessen-79-tesen-wynn-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+          <article class="wp-card reveal">
+            <div class="wp-art">
+              <img src="assets/wallpapers/thumbs/93-kald-eschen.webp" alt="Kald Eschen phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Kald Eschen</b>
+              <span>Nature</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/93-kald-eschen-wallpaper.jpg" download="setsuna-kessen-93-kald-eschen-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
     <!-- ============ ROADMAP (v9, no dates) ============ -->
     <section class="blade v9 roadmap" id="roadmap">
       <div class="wrap">
@@ -281,7 +408,7 @@
           <li class="reveal"><span class="road-dot"></span><span class="road-step">02</span><h3>Vertical Slice</h3><p>Polished fighters, first real arena, VFX and sound pass.</p></li>
           <li class="reveal"><span class="road-dot"></span><span class="road-step">03</span><h3>Roster Build</h3><p>More fighters added in element waves, private playtests after each.</p></li>
           <li class="reveal"><span class="road-dot"></span><span class="road-step">04</span><h3>Closed Beta</h3><p>Invite-only testing with the community. Join the Discord to get in.</p></li>
-          <li class="reveal"><span class="road-dot"></span><span class="road-step">05</span><h3>Launch</h3><p>Ranked 1v1, more modes, cosmetic shop <span class="p2w">(cosmetics only, never pay-to-win)</span>.</p></li>
+          <li class="reveal"><span class="road-dot"></span><span class="road-step">05</span><h3>Launch</h3><p>Ranked Duels, Squad Clash, Legion War and Aurel Bay go live, plus a cosmetic shop <span class="p2w">(cosmetics only, never pay-to-win)</span>.</p></li>
         </ol>
         <p class="road-foot reveal"><em>Dates announced when we're sure. Follow the Discord for updates.</em></p>
       </div>
@@ -292,7 +419,7 @@
       <div class="cp-content">
         <p class="kicker kicker-italic reveal">Join</p>
         <h2 class="sr-only"><span data-game-name>Setsuna Kessen</span></h2>
-        <figure class="cp-banner reveal"><img src="assets/brand/banner.webp" alt="Setsuna Kessen key art banner: two fighters face off in a ruined city under a red sky" width="1280" height="572" loading="lazy" decoding="async"><span class="ph-tag">Concept art</span></figure>
+        <figure class="cp-banner reveal"><img src="assets/news/site-live.webp" alt="Setsuna Kessen key art: two fighters face off at dusk over a navy-and-gold academy city" width="1280" height="720" loading="lazy" decoding="async"><span class="ph-tag">Concept art</span></figure>
         <p class="blade-copy reveal">Find teammates, catch update drops first, enter tournaments and get exclusive codes in the official Discord.</p>
         <div class="cp-stats reveal">
           <div><strong data-count="12400">12.4K</strong><span>Members</span></div>
@@ -314,6 +441,7 @@
       <a href="#story">Story</a>
       <a href="#fighters">Fighters</a>
       <a href="#howtoplay">How to play</a>
+      <a href="#wallpapers">Wallpapers</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#codes">Codes</a>
       <a href="#" data-discord>Discord</a>
@@ -335,9 +463,9 @@
         <span class="notice-badge">Preview</span>
         <ul>
           <li>Concept-art fighter roster; placeholder abilities</li>
-          <li>Placeholder codes &amp; rewards</li>
+          <li>Launch codes listed — redeemable at launch</li>
           <li>Placeholder patch notes &amp; stats</li>
-          <li>Placeholder art &amp; trailer</li>
+          <li>Placeholder arena screenshots &amp; trailer</li>
         </ul>
       </div>
     </div>
@@ -347,10 +475,10 @@
   <aside class="promo-bar" id="promoBar">
     <div class="pb-art" aria-hidden="true"><span lang="ja">刹那決戦</span></div>
     <div class="pb-text">
-      <span class="pb-kicker">Season 01 <em class="ph-inline ph-inline-dark">Placeholder</em></span>
-      <strong>Storm Season<br class="m-br"> is live</strong>
+      <span class="pb-kicker">Pre-launch</span>
+      <strong>Join the Discord.<br class="m-br"> Follow for launch.</strong>
     </div>
-    <button class="btn btn-gold btn-round" data-open-patch="0">Learn more</button>
+    <a class="btn btn-gold btn-round" href="#community">Join Discord</a>
     <button class="pb-close" id="promoClose" aria-label="Close announcement">×</button>
   </aside>
 

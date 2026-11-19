@@ -12,6 +12,11 @@ const CONFIG = {
   DISCORD_URL: "#",  // TODO: real Discord invite, e.g. https://discord.gg/XXXXXX
 };
 
+/* Asset root: "" on the homepage, "../" on element pages (set via <html data-base>). */
+const BASE = document.documentElement.getAttribute("data-base") || "";
+const asset = (path) => BASE + path;
+
+
 /* ---------------- FIGHTER ROSTER (real concept-art cards) ----------------
    Generated from /workspace/fighters/<element>/<num>-<name>.jpg.
    Each entry: [number, element, file slug]. Display names come from the slug
@@ -123,7 +128,7 @@ const ROSTER_RAW = [
 const ROSTER = ROSTER_RAW.map(([n, el, slug]) => {
   const name = slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
   const file = `${String(n).padStart(2, "0")}-${slug}`;
-  return { n, el, slug, name, src: `assets/fighters/${el}/${file}.webp`, lg: `assets/fighters/${el}/${file}-lg.webp` };
+  return { n, el, slug, name, src: asset(`assets/fighters/${el}/${file}.webp`), lg: asset(`assets/fighters/${el}/${file}-lg.webp`) };
 });
 
 
@@ -567,14 +572,22 @@ const FIGHTERS = [
 ];
 
 const MODES = [
-  { name: "Ranked Duels", players: "1v1", icon: "duel",
-    text: "Climb seasonal tiers in pure skill matchups. Best of three, no excuses." },
-  { name: "Squad Clash", players: "3v3", icon: "squad",
-    text: "Team up, combine ultimates, and capture the shrine before time runs out." },
-  { name: "Battle Royale", players: "20 players", icon: "royale",
-    text: "A shrinking arena, scattered power scrolls, one survivor." },
-  { name: "Raid Trials", players: "Co-op 1–4", icon: "raid",
-    text: "Face giant bosses and endless waves to earn rare skins and titles." },
+  { name: "Ranked Duels", tab: "Ranked Duels", players: "1v1 · Online",
+    title: "One versus one.",
+    text: "Climb the ladder in pure skill matchups. Online 1v1 — just you, your kit, and the next instant.",
+    src: "assets/modes/ranked-duels.webp" },
+  { name: "Squad Clash", tab: "Squad Clash", players: "3v3 · Best of 3 · Online",
+    title: "Three minds, one opening.",
+    text: "Queue with a squad or get matched with two others. A best-of-three online clash — combine Awakenings and take the round together.",
+    src: "assets/modes/squad-clash.webp" },
+  { name: "Legion War", tab: "Legion War", players: "5v5 · Best of 3 · Online",
+    title: "Ten fighters. One field.",
+    text: "A larger arena, a full team, and a best-of-three war online. Hold the line, crash the backline, and win the clutch moment as a unit.",
+    src: "assets/modes/legion-war.webp" },
+  { name: "Aurel Bay Free-for-All", tab: "Aurel Bay<br>Free-for-All", players: "Open-world FFA · Online",
+    title: "The city never sleeps.",
+    text: "Drop into the streets of Aurel Bay and fight anyone you find. An open-city free-for-all — queue for 1v1, 3v3, or 5v5 from inside the hub when you're ready.",
+    src: "assets/modes/aurel-bay.webp" },
 ];
 
 const FEATURES = [
@@ -602,26 +615,32 @@ const UPDATES = [
 ];
 
 const CODES = [
-  { code: "LAUNCHDAY", reward: "500 Gems + Launch title", status: "new" },
-  { code: "STORMSEASON", reward: "2x XP boost (30 min)", status: "active" },
-  { code: "INSTANT10K", reward: "Free fighter spin", status: "active" },
-  { code: "RAIDREADY", reward: "250 Gems + Raid key", status: "active" },
-  { code: "BETATESTER", reward: "Beta aura trail", status: "expired" },
+  { code: "SETSUNA", reward: "200 gems", status: "launch" },
+  { code: "FIRSTBLOOD", reward: "300 gems + 'First Blood' title", status: "launch" },
+  { code: "AURELBAY", reward: "100 gems + Aurel Bay scarf", status: "launch" },
 ];
 
-/* News cards = patch notes + announcements (PLACEHOLDER) */
+/* Featured news — current project updates */
 const NEWS = [
-  { cat: "Patch Notes", date: "Placeholder · Week 3", title: "Patch v1.3 Notes: Storm Season", desc: "A new fighter, a new Battle Royale map and a ranked reset.", patch: 0, hue: 215, glyph: "嵐" },
-  { cat: "Patch Notes", date: "Placeholder · Week 2", title: "Patch v1.2 Notes: Raid Trials", desc: "Co-op raids arrive with the Hollow Shogun boss and balance changes.", patch: 1, hue: 40, glyph: "襲" },
-  { cat: "Patch Notes", date: "Placeholder · Week 1", title: "Patch v1.0: Launch Day", desc: "Five fighters, two modes and the training grounds — the first instant.", patch: 2, hue: 200, glyph: "始" },
-  { cat: "Codes", date: "Placeholder · Week 3", title: "New code drop: STORMSEASON", desc: "Grab a 2x XP boost before it expires. See all active codes.", link: "#codes", hue: 40, glyph: "賞" },
-  { cat: "Community", date: "Placeholder · Week 2", title: "Kessen Cup #1 sign-ups open", desc: "Our first community tournament is coming to the Discord.", link: "#community", hue: 215, glyph: "道" },
+  { cat: "Dev update", date: "Nov 2026", title: "The official site is live",
+    desc: "Setsuna Kessen has a home on the web. Browse the roster, read the modes, and grab the launch codes — more updates land here first.",
+    img: "assets/news/site-live.webp", pos: "center 38%" },
+  { cat: "Dev update", date: "Nov 2026", title: "Roster reveal: 100 fighters",
+    desc: "One hundred fighters across ten elements. Wave 1 kits are up now; the rest stay labeled until their kits land.",
+    img: "assets/news/roster-maelis.webp", pos: "center", link: "#fighters" },
+  { cat: "Dev update", date: "Nov 2026", title: "Four modes, locked in",
+    desc: "Ranked Duels, Squad Clash, Legion War, and the Aurel Bay free-for-all. Online 1v1, 3v3, and 5v5, plus an open-city fight.",
+    img: "assets/modes/ranked-duels.webp", pos: "center 46%", link: "#modes" },
+  { cat: "Dev update", date: "Nov 2026", title: "Launch codes are ready",
+    desc: "SETSUNA, FIRSTBLOOD, and AURELBAY grant gems and cosmetics, redeemable at launch. Redeem all three to unlock your first skin.",
+    img: "assets/rewards-hero.webp", pos: "center 45%", link: "#codes" },
 ];
 
 /* ---------------- v7 layered hero intro ----------------
    Runs before first paint: hide the hero pieces, preload the layers, then play
    plate -> fighters slide in -> title. Skipped entirely for reduced motion. */
 (function heroIntro() {
+  if (!document.querySelector(".masthead")) return;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) return;
   const root = document.documentElement;
@@ -641,10 +660,10 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 function applyConfig() {
   $$("[data-game-name]").forEach((el) => (el.textContent = CONFIG.GAME_NAME));
   $$("[data-game-split]").forEach((el) => (el.innerHTML = CONFIG.GAME_NAME.split(" ").join("<br>")));
-  document.title = `${CONFIG.GAME_NAME} — Anime Fighting on Roblox`;
+  if (!document.body.dataset.element) document.title = `${CONFIG.GAME_NAME} — Anime Fighting on Roblox`;
   $$("[data-roblox]").forEach((a) => (a.href = CONFIG.ROBLOX_URL));
   $$("[data-discord]").forEach((a) => (a.href = CONFIG.DISCORD_URL));
-  $("#year").textContent = new Date().getFullYear();
+  const year = $("#year"); if (year) year.textContent = new Date().getFullYear();
 }
 
 /* Original abstract fighter art (placeholder) */
@@ -696,13 +715,13 @@ function sceneArt(hue, glyph, kind = "news", uid = "") {
 /* ---------------- Featured news ---------------- */
 function renderNews() {
   $("#newsRail").innerHTML = NEWS.map((n, i) => `
-    <button class="news-card reveal" style="--d:${(i % 3) * 0.08}s" ${n.patch !== undefined ? `data-open-patch="${n.patch}"` : `data-link="${n.link}"`}>
-      <div class="news-img">${sceneArt(n.hue, n.glyph, "news", i)}<span class="ph-tag">Placeholder</span><span class="news-corner">${n.patch !== undefined ? "↗" : "→"}</span></div>
+    <button type="button" class="news-card reveal" style="--d:${(i % 3) * 0.08}s"${n.link ? ` data-link="${n.link}"` : ""}>
+      <div class="news-img"><img src="${n.img}" alt="" width="640" height="360" loading="lazy" decoding="async" style="object-position:${n.pos || "center"}">${n.link ? `<span class="news-corner">→</span>` : ""}</div>
       <div class="news-meta"><span class="cat">${n.cat}</span><span class="sep"></span><span class="date">${n.date}</span></div>
       <h3 class="news-title">${n.title}</h3>
       <p class="news-desc">${n.desc}</p>
     </button>`).join("");
-  $$("[data-link]").forEach((b) => b.addEventListener("click", () => document.querySelector(b.dataset.link).scrollIntoView({ behavior: "smooth" })));
+  $$("#newsRail [data-link]").forEach((b) => b.addEventListener("click", () => document.querySelector(b.dataset.link).scrollIntoView({ behavior: "smooth" })));
   rail($("#newsRail"), $("#newsPrev"), $("#newsNext"), $("#newsProgress"));
 }
 
@@ -722,19 +741,16 @@ function rail(el, prev, next, bar) {
 /* ---------------- Fighter roster grid (v8) ---------------- */
 const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
 /* element icon (assets/icons/<element>.webp, from /workspace/brand/icons) */
-const elIcon = (el, size) => `<img class="el-ico" src="assets/icons/${el}.webp" alt="" width="${size}" height="${size}" loading="lazy" decoding="async">`;
+const elIcon = (el, size) => `<img class="el-ico" src="${asset(`assets/icons/${el}.webp`)}" alt="" width="${size}" height="${size}" loading="lazy" decoding="async">`;
 const ROSTER_PREVIEW = 18; // 3 rows on desktop; "Show all" reveals the rest
 const rosterState = { el: "all", q: "", shown: ROSTER, expanded: false };
 function renderRoster() {
   const grid = $("#rosterGrid"), chips = $("#rosterChips"), input = $("#rosterSearch");
+  if (!grid || !chips) return;
   const counts = ELEMENTS.reduce((o, e) => ((o[e] = ROSTER.filter((f) => f.el === e).length), o), {});
   chips.innerHTML = [["all", "All", ROSTER.length], ...ELEMENTS.map((e) => [e, cap(e), counts[e]])].map(([k, label, c]) =>
     `<button type="button" class="rs-chip${k === "all" ? " active" : ""}" data-el="${k}" aria-pressed="${k === "all"}">${k === "all" ? "" : elIcon(k, 20)}${label}<small>${c}</small></button>`).join("");
-  grid.innerHTML = ROSTER.map((f, i) => `
-    <button type="button" class="rs-card" data-i="${i}" data-el="${f.el}" data-name="${f.name.toLowerCase()}" aria-label="${f.name}, ${cap(f.el)} element. Open card">
-      <span class="rs-art"><img src="${f.src}" alt="" width="480" height="640" loading="lazy" decoding="async"><span class="rs-badge" title="${cap(f.el)}">${elIcon(f.el, 30)}</span></span>
-      <span class="rs-meta"><span class="rs-name">${f.name}</span><span class="rs-el">${cap(f.el)}</span></span>
-    </button>`).join("");
+  grid.innerHTML = ROSTER.map((f, i) => fighterCardHTML(f, i)).join("");
   const cards = $$(".rs-card", grid);
   const apply = () => {
     const q = rosterState.q.trim().toLowerCase();
@@ -754,6 +770,15 @@ function renderRoster() {
     more.textContent = rosterState.expanded ? "Show fewer fighters" : `Show all ${ROSTER.length} fighters`;
     more.setAttribute("aria-expanded", !!rosterState.expanded);
     $("#rosterEmpty").hidden = shown.length > 0;
+    const elLink = $("#rosterElLink");
+    if (elLink) {
+      if (rosterState.el === "all") { elLink.hidden = true; elLink.innerHTML = ""; }
+      else {
+        const name = cap(rosterState.el);
+        elLink.hidden = false;
+        elLink.innerHTML = `<a href="${asset(`elements/${rosterState.el}.html`)}">Open the ${name} element page <span aria-hidden="true">→</span></a>`;
+      }
+    }
   };
   chips.addEventListener("click", (e) => {
     const b = e.target.closest(".rs-chip"); if (!b) return;
@@ -768,15 +793,38 @@ function renderRoster() {
   });
   $("#rosterReset").addEventListener("click", () => { input.value = ""; rosterState.q = ""; $(".rs-chip[data-el='all']", chips).click(); });
   apply();
+  bindFighterGrid(grid);
+}
 
-  // Lightbox
+const ELEMENT_LORE = {
+  wind: "Wind Resonances open a thin corridor of air and step through it. In a Kessen, that stolen space is enough to vanish from a slash — or arrive already striking.",
+  ice: "Ice holds a breath of the world still. Wardens of this line freeze a step, a blade, a second, then spend that pause before it thaws.",
+  flame: "Flame answers heat with a sharper heat. Students are taught to spend it in one clean burst, a kiln-bright instant, never a wildfire they cannot take back.",
+  lightning: "Lightning does not wait for the count. It crosses the arena in the gap between eye and thought, and the fighter who wakes to it must learn to aim what cannot be recalled.",
+  earth: "Earth Resonances borrow the city's weight. A planted foot becomes a wall; a raised street becomes a weapon; the ground itself agrees, briefly, to take a side.",
+  water: "Water yields, then returns the force it was given. In Aurel Bay it is the art of redirection: a tide that looks soft until it breaks the stance that pushed it.",
+  shadow: "Shadow is the Resonance of the unlit edge. It hides a step, a hand, a whole fighter in the seam between lamp and alley, then spends that dark on a single decisive cut.",
+  light: "Light does not only reveal; it decides what may be seen. Bearers of this line flare a path, a mark, a blind instant — and move while the world is still blinking.",
+  metal: "Metal Resonances harden what they touch. A coat becomes plate, a coin becomes a blade, and the fighter learns to choose, in one instant, what must not break.",
+  nature: "Nature answers the living city. Roots, leaf, and sap remember the streets as a forest once, and in a Kessen they return just long enough to bind, to bloom, or to bleed green through stone.",
+};
+
+function fighterCardHTML(f, i) {
+  return `<button type="button" class="rs-card" data-i="${i}" data-el="${f.el}" data-name="${f.name.toLowerCase()}" aria-label="${f.name}, ${cap(f.el)} element. Open card">
+      <span class="rs-art"><img src="${f.src}" alt="" width="480" height="640" loading="lazy" decoding="async"><span class="rs-badge" title="${cap(f.el)}">${elIcon(f.el, 30)}</span></span>
+      <span class="rs-meta"><span class="rs-name">${f.name}</span><span class="rs-el">${cap(f.el)}</span></span>
+    </button>`;
+}
+
+function bindFighterGrid(grid) {
+  if (!grid || !$("#fighterModal")) return;
   const openModal = modal("#fighterModal");
   let cur = 0;
   const setRole = (r) => { const t = $("#fmRole"); t.hidden = !r; t.textContent = r || ""; };
   const renderKit = (abil, hasKit) => {
     const row = $("#fmKit"), info = $("#fmAbility");
     row.innerHTML = abil.map((a, k) => `<button type="button" class="ab-btn${a.slot === "Awakening" ? " ab-awk" : ""}" role="tab" aria-selected="${k === 0}" data-k="${k}" aria-label="${a.slot}: ${a.name}">
-        <img src="assets/icons/${a.icon || "light"}.webp" alt="" width="44" height="44"><span class="ab-key">${a.key}</span></button>`).join("");
+        <img src="${asset(`assets/icons/${a.icon || "light"}.webp`)}" alt="" width="44" height="44"><span class="ab-key">${a.key}</span></button>`).join("");
     const pick = (k) => {
       const a = abil[k];
       $$(".ab-btn", row).forEach((b, j) => { b.classList.toggle("active", j === k); b.setAttribute("aria-selected", j === k); });
@@ -798,7 +846,6 @@ function renderRoster() {
     setRole(kit && kit.role);
     renderKit(kit ? kitAbilities(kit, f.el) : placeholderKit(f.el), !!kit);
   };
-  // kit-only preview for designed fighters that don't have a roster card yet (e.g. #fighter=tovin-rusk)
   const showKitOnly = (slug) => {
     const k = FIGHTER_KITS[slug]; if (!k) return false;
     const fi = ROSTER.findIndex((f) => kitSlug(f.name) === slug); if (fi >= 0) { show(fi); return true; }
@@ -816,56 +863,105 @@ function renderRoster() {
   addEventListener("hashchange", fromHash); setTimeout(fromHash, 0);
   const step = (d) => { const list = rosterState.shown.length ? rosterState.shown : ROSTER; const k = list.indexOf(ROSTER[cur]); show(ROSTER.indexOf(list[(k + d + list.length) % list.length])); };
   grid.addEventListener("click", (e) => { const c = e.target.closest(".rs-card"); if (!c) return; show(+c.dataset.i); openModal(); });
-  $("#fmPrev").addEventListener("click", () => step(-1));
-  $("#fmNext").addEventListener("click", () => step(1));
+  const prev = $("#fmPrev"), next = $("#fmNext");
+  if (prev) prev.addEventListener("click", () => step(-1));
+  if (next) next.addEventListener("click", () => step(1));
   addEventListener("keydown", (e) => {
     if (!$("#fighterModal").classList.contains("open")) return;
     if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
   });
 }
 
+function renderElementPage() {
+  const el = document.body.dataset.element;
+  const grid = $("#elementGrid");
+  if (!el || !grid) return;
+  const fighters = ROSTER.filter((f) => f.el === el);
+  rosterState.el = el;
+  rosterState.shown = fighters;
+  rosterState.expanded = true;
+  grid.innerHTML = fighters.map((f) => fighterCardHTML(f, ROSTER.indexOf(f))).join("");
+  bindFighterGrid(grid);
+}
+
 /* ---------------- Modes ---------------- */
-let mIdx = 0;
-const MODE_TAGLINES = ["The core competitive mode", "Team up and take the shrine", "Last fighter standing", "Co-op against giant bosses"];
-const MODE_HUES = [215, 205, 178, 228]; // gold / navy / teal / blue (placeholder art)
+function bindArt(img, root, tag, okLabel) {
+  if (!img || !root) return;
+  const sync = (ok) => {
+    img.classList.toggle("is-on", ok);
+    root.classList.toggle("art-missing", !ok);
+    if (tag) tag.textContent = ok ? (okLabel || tag.dataset.ok || "Concept art") : (tag.dataset.miss || "Art coming soon");
+  };
+  img.addEventListener("load", () => sync(true));
+  img.addEventListener("error", () => sync(false));
+  if (img.complete) sync(img.naturalWidth > 0);
+}
+
 function renderModes() {
   $("#modeTabs").innerHTML = MODES.map((m, i) => `
-    <button class="mode-tab" role="tab" data-i="${i}"><span class="thumb">${sceneArt(MODE_HUES[i], "", m.icon, "t" + i)}</span>${m.name}</button>`).join("");
-  $$(".mode-tab").forEach((t) => t.addEventListener("click", () => selectMode(+t.dataset.i)));
+    <button class="mode-tab" role="tab" data-i="${i}" aria-selected="false">
+      <span class="thumb art-missing"><span class="art-fallback" aria-hidden="true">Art coming soon</span><img src="${m.src}" alt=""></span>
+      <span class="mode-tab-name">${m.tab}</span>
+    </button>`).join("");
+  $$(".mode-tab").forEach((t) => {
+    bindArt(t.querySelector("img"), t.querySelector(".thumb"));
+    t.addEventListener("click", () => selectMode(+t.dataset.i));
+  });
   selectMode(0);
   $("#featureList").innerHTML = FEATURES.map(([t, d], i) => `
     <li class="reveal" style="--d:${(i % 3) * 0.07}s"><span class="fi"><span>0${i + 1}</span></span><strong>${t}</strong><p>${d}</p></li>`).join("");
 }
+
+let mIdx = 0;
 function selectMode(i) {
   mIdx = i; const m = MODES[i];
-  $$(".mode-tab").forEach((t, k) => t.classList.toggle("active", k === i));
-  $("#modeArt").innerHTML = `<div class="art-in" style="width:100%;height:100%">${sceneArt(MODE_HUES[i], "", m.icon, "big" + i).replace('viewBox="0 0 400 225"', 'viewBox="87 0 225 225"')}</div>`;
-  $("#modeCaption").innerHTML = `<div class="fade"><span class="players">${m.players}</span><h3>${MODE_TAGLINES[i]}</h3><p class="desc"><strong>${m.name}.</strong> ${m.text}</p></div>`;
+  $$(".mode-tab").forEach((t, k) => {
+    t.classList.toggle("active", k === i);
+    t.setAttribute("aria-selected", String(k === i));
+  });
+  $("#modeArt").innerHTML = `<div class="art-fallback" aria-hidden="true">Art coming soon</div><img class="art-in" src="${m.src}" alt="${m.name}">`;
+  bindArt($("#modeArt img"), $("#modeStage"), $("#modeArtTag"), "Concept art");
+  $("#modeCaption").innerHTML = `<div class="fade"><span class="players">${m.players}</span><h3>${m.title}</h3><p class="desc"><strong>${m.name}.</strong> ${m.text}</p></div>`;
   const st = $("#modeStage"); st.classList.remove("swap"); void st.offsetWidth; st.classList.add("swap");
 }
 
 /* ---------------- Codes ---------------- */
+const ICO_GEM = `<svg class="rw-ico rw-gem" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="#0AC8B9" d="M8 1.6 14.2 6.4 8 14.4 1.8 6.4z"/><path fill="#087F78" d="M8 1.6 11.4 6.4H4.6z"/><path fill="#0A5E5A" d="M4.6 6.4h6.8L8 14.4z" opacity=".55"/></svg>`;
+const ICO_TITLE = `<svg class="rw-ico rw-title" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#C8AA6E" stroke-width="1.3" d="M2.2 4.2h11.6v8.2L8 11.2 2.2 12.4z"/><path fill="none" stroke="#C8AA6E" stroke-width="1.3" d="M3.6 6.4h8.8M3.6 8.6h6.2"/></svg>`;
+const ICO_SCARF = `<svg class="rw-ico rw-scarf" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#C8AA6E" stroke-width="1.35" stroke-linecap="round" d="M3.2 5c2.2-2.2 6.2-2 6.4.8.2 1.8-1.8 2.2-1.8 4.2 0 1.5 1.3 2.4 2.8 2.2"/><path fill="none" stroke="#C8AA6E" stroke-width="1.35" stroke-linecap="round" d="M8.4 5.6c1.3-1.1 3.6-.8 4.4.8"/></svg>`;
+function rewardLine(reward) {
+  return reward.split(/\s*\+\s*/).map((part) => {
+    const ico = /gem/i.test(part) ? ICO_GEM : /title/i.test(part) ? ICO_TITLE : /scarf/i.test(part) ? ICO_SCARF : "";
+    return `<span class="code-part">${ico}<span>${part}</span></span>`;
+  }).join(`<span class="code-plus" aria-hidden="true">+</span>`);
+}
 function renderCodes() {
-  const label = { new: "New", active: "Active", expired: "Expired" };
-  $("#codesList").innerHTML = CODES.map((c, i) => `
-    <div class="code reveal ${c.status === "expired" ? "expired" : ""}" style="--d:${i * 0.05}s">
-      <div><span class="code-val">${c.code}</span><span class="code-reward">${c.reward}</span></div>
-      <span class="code-status ${c.status === "expired" ? "exp" : c.status}">${label[c.status]}</span>
-      <button class="copy-btn" data-code="${c.code}" ${c.status === "expired" ? "disabled" : ""} aria-label="Copy code ${c.code}">
-        <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <span>${c.status === "expired" ? "Expired" : "Copy"}</span>
-      </button>
-    </div>`).join("");
+  const list = $("#codesList"); if (!list) return;
+  const label = { new: "New", active: "Active", expired: "Expired", launch: "Redeemable at launch" };
+  list.innerHTML = CODES.map((c, i) => `
+    <article class="code-card reveal ${c.status === "expired" ? "expired" : ""}" style="--d:${i * 0.05}s">
+      <div class="code-card-inner">
+        <div class="code-top">
+          <span class="code-val">${c.code}</span>
+          <button class="copy-btn" data-code="${c.code}" ${c.status === "expired" ? "disabled" : ""} aria-label="Copy code ${c.code}">
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>${c.status === "expired" ? "Expired" : "Copy"}</span>
+          </button>
+        </div>
+        <div class="code-reward">${rewardLine(c.reward)}</div>
+        <span class="code-status ${c.status === "expired" ? "exp" : c.status}">${label[c.status]}</span>
+      </div>
+    </article>`).join("");
   $$(".copy-btn:not(:disabled)").forEach((b) => b.addEventListener("click", () => copyCode(b)));
-  $("#promoArt").innerHTML = fighterArt({ ...FIGHTERS[3], hue: 40 }, 3, { transparent: true, uid: "promo" });
+  bindArt($("#rewardsArt img"), $("#rewardsArt"), $("#rewardsArtTag"));
 }
 async function copyCode(btn) {
   const code = btn.dataset.code;
   try { await navigator.clipboard.writeText(code); }
   catch { const ta = Object.assign(document.createElement("textarea"), { value: code }); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
-  btn.classList.add("copied"); btn.querySelector("span").textContent = "Copied";
+  btn.classList.add("copied"); btn.querySelector("span").textContent = "Copied!";
   setTimeout(() => { btn.classList.remove("copied"); btn.querySelector("span").textContent = "Copy"; }, 1800);
-  toast(`Copied <code>${code}</code> — redeem it in-game`);
+  toast(`Copied <code>${code}</code> — redeem it at launch from the Codes menu`);
 }
 let toastT;
 function toast(html) { const t = $("#toast"); t.innerHTML = `<span class="ph-dot"></span>${html}`; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2400); }
@@ -880,14 +976,19 @@ function modal(id) {
   return open;
 }
 function initModals() {
-  const openTrailer = modal("#trailerModal");
-  $$("[data-open-trailer]").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); closeMenu(); openTrailer(); }));
+  if ($("#trailerModal")) {
+    const openTrailer = modal("#trailerModal");
+    $$("[data-open-trailer]").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); closeMenu(); openTrailer(); }));
+  }
+  if (!$("#patchModal")) return;
   const openPatch = modal("#patchModal");
   const show = (i) => {
-    const u = UPDATES[i], n = NEWS.find((x) => x.patch === i) || NEWS[0];
+    const u = UPDATES[i];
+    const hues = [215, 40, 200];
+    const glyphs = ["嵐", "襲", "始"];
     const group = (label, items, c) => `<div class="patch-group" style="--c:${c}"><h4><i></i>${label}</h4><ul>${items.map((x) => `<li>${x}</li>`).join("")}</ul></div>`;
     $("#patchArticle").innerHTML = `
-      <div class="article-hero">${sceneArt(n.hue, n.glyph, "news", "m" + i)}<span class="ph-tag">Placeholder patch notes</span></div>
+      <div class="article-hero">${sceneArt(hues[i] ?? 215, glyphs[i] ?? "", "news", "m" + i)}<span class="ph-tag">Placeholder patch notes</span></div>
       <div class="article-inner">
         <div class="news-meta"><span class="cat">Patch Notes</span><span class="sep"></span><span class="date">${u.date}</span></div>
         <h3>${u.ver} — ${u.title}</h3>
@@ -903,14 +1004,15 @@ function initModals() {
 function closeMenu() { $("#mainnav").classList.remove("open"); $("#burger").setAttribute("aria-expanded", false); document.body.style.overflow = ""; }
 function initNav() {
   const nav = $("#mainnav"), burger = $("#burger");
+  if (!nav || !burger) return;
   burger.addEventListener("click", () => { const o = nav.classList.toggle("open"); burger.setAttribute("aria-expanded", o); document.body.style.overflow = o ? "hidden" : ""; });
   $$("a", nav).forEach((a) => a.addEventListener("click", closeMenu));
   $$(".dd-toggle").forEach((t) => t.addEventListener("click", () => { const o = t.parentElement.classList.toggle("open"); t.setAttribute("aria-expanded", o); }));
   const links = $$(".mainnav > a[href^='#']:not([data-open-patch])");
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id)); }), { rootMargin: "-45% 0px -50% 0px" });
-  ["news", "story", "fighters", "howtoplay", "modes", "arenas", "codes", "roadmap", "community"].forEach((id) => io.observe(document.getElementById(id)));
-  $(".ph-banner-close").addEventListener("click", () => document.body.classList.add("banner-hidden"));
-  $("#promoClose").addEventListener("click", () => $("#promoBar").classList.add("hide"));
+  ["news", "story", "fighters", "howtoplay", "modes", "arenas", "codes", "wallpapers", "roadmap", "community"].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  const phClose = $(".ph-banner-close"); if (phClose) phClose.addEventListener("click", () => document.body.classList.add("banner-hidden"));
+  const promoClose = $("#promoClose"); if (promoClose) promoClose.addEventListener("click", () => $("#promoBar").classList.add("hide"));
 }
 function initMore() {
   $$("[data-more]").forEach((b) => b.addEventListener("click", () => {
@@ -930,8 +1032,28 @@ function initParallax() {
   addEventListener("scroll", () => { if (!tick) { requestAnimationFrame(upd); tick = true; } }, { passive: true }); upd();
 }
 function initParticles() {
-  const host = $("#mhParticles"), n = innerWidth < 600 ? 16 : 34;
+  const host = $("#mhParticles"); if (!host) return;
+  const n = innerWidth < 600 ? 16 : 34;
   for (let i = 0; i < n; i++) { const p = document.createElement("i"); p.style.left = `${Math.random() * 100}%`; p.style.animationDuration = `${7 + Math.random() * 9}s`; p.style.animationDelay = `${-Math.random() * 16}s`; host.appendChild(p); }
+}
+
+function initPromoVideo() {
+  const v = $("#promoVideo"); if (!v) return;
+  const stage = $("#promoStage") || v.closest(".diamond-stage");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) {
+    v.pause();
+    v.removeAttribute("autoplay");
+    if (stage) stage.classList.add("reduced-motion");
+    return;
+  }
+  v.muted = true;
+  v.defaultMuted = true;
+  v.setAttribute("playsinline", "");
+  v.setAttribute("autoplay", "");
+  const play = () => { v.classList.add("is-on"); v.play().catch(() => {}); };
+  if (v.readyState >= 2) play();
+  else v.addEventListener("canplay", play, { once: true });
 }
 function initCounters() {
   const io = new IntersectionObserver((es) => es.forEach((e) => {
@@ -945,6 +1067,11 @@ function initCounters() {
 
 document.addEventListener("DOMContentLoaded", () => {
   applyConfig();
-  renderNews(); renderRoster(); renderCodes(); renderModes();
+  if ($("#newsRail")) renderNews();
+  if ($("#rosterGrid")) renderRoster();
+  if ($("#elementGrid")) renderElementPage();
+  if ($("#codesList")) renderCodes();
+  if ($("#modeTabs")) renderModes();
+  initPromoVideo();
   initNav(); initMore(); initModals(); initReveal(); initParallax(); initParticles(); initCounters();
 });
