@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setsuna Kessen — Anime Fighting on Roblox</title>
+  <meta name="description" content="Setsuna Kessen (刹那決戦) — an anime fighting game on Roblox where every fight is decided in an instant." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Yuji+Boku&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" href="assets/brand/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="assets/brand/favicon-16.png" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <meta name="theme-color" content="#010A13" />
+  <!-- Open Graph / Twitter. NOTE: og:image, twitter:image and og:url must be ABSOLUTE URLs
+       (https://your-domain/assets/og.jpg) once the site is deployed; relative paths are placeholders. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Setsuna Kessen" />
+  <meta property="og:title" content="Setsuna Kessen (刹那決戦) — Anime Fighting on Roblox" />
+  <meta property="og:description" content="An anime fighting game on Roblox. 100 fighters, ten elements, and every fight is decided in an instant." />
+  <meta property="og:image" content="https://tkaytyf.github.io/setsuna-kessen/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Setsuna Kessen key art" />
+  <meta property="og:url" content="https://tkaytyf.github.io/setsuna-kessen/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Setsuna Kessen (刹那決戦) — Anime Fighting on Roblox" />
+  <meta name="twitter:description" content="An anime fighting game on Roblox. 100 fighters, ten elements, and every fight is decided in an instant." />
+  <meta name="twitter:image" content="https://tkaytyf.github.io/setsuna-kessen/assets/og.jpg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Site-wide placeholder notice -->
+  <div class="ph-banner" role="note">
+    <span class="ph-dot"></span>
+    <span class="ph-long">Preview build — characters, abilities, codes, patch notes, stats, art and trailer are <strong>placeholders</strong>.</span>
+    <span class="ph-short">Preview — characters, codes &amp; art are <strong>placeholders</strong>.</span>
+    <button class="ph-banner-close" aria-label="Dismiss notice">×</button>
+  </div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar" id="topbar">
+    <a href="#top" class="brand" aria-label="Setsuna Kessen home">
+      <span class="brand-logo" role="img" aria-label="Setsuna Kessen"></span>
+    </a>
+    <nav class="mainnav" id="mainnav" aria-label="Main">
+      <a href="#news">News</a>
+      <a href="#story">Story</a>
+      <a href="#fighters">Fighters</a>
+      <a href="#howtoplay">How to Play</a>
+      <div class="dd">
+        <button class="dd-toggle" aria-expanded="false">Game <i class="caret"></i></button>
+        <div class="dd-menu">
+          <a href="#modes">Game modes</a>
+          <a href="#arenas">Arenas</a>
+          <a href="#features">Features</a>
+          <a href="#news" data-open-patch="0">Patch notes</a>
+          <a href="#" data-open-trailer>Trailer</a>
+        </div>
+      </div>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#codes">Codes</a>
+      <a href="#community">Community</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- TODO: replace href with the real Roblox game URL (or set CONFIG.ROBLOX_URL in script.js) -->
+      <a href="#" class="pill-cta" data-roblox>Play now</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ============ 1. MASTHEAD (video-style hero, centered logo + CTA) ============ -->
+    <section class="masthead" id="hero">
+      <div class="mh-bg" aria-hidden="true">
+        <div class="mh-sky" data-parallax="0.32"></div>
+        <!-- v7 layered hero: fighters cut out of the concept art, slide in on load, parallax faster than the plate -->
+        <div class="mh-layer mh-layer-l" data-parallax="0.08"><div class="mh-cut"></div></div>
+        <div class="mh-layer mh-layer-r" data-parallax="0.12"><div class="mh-cut"></div></div>
+        <div class="mh-kanji" lang="ja" data-parallax="0.18">刹那決戦</div>
+        <svg class="mh-figure mh-figure-l" viewBox="0 0 400 600" data-parallax="0.1"><use href="#fighter-shape"/></svg>
+        <svg class="mh-figure mh-figure-r" viewBox="0 0 400 600" data-parallax="0.14"><use href="#fighter-shape"/></svg>
+        <div class="mh-slashes"><span></span><span></span><span></span></div>
+        <div class="mh-particles" id="mhParticles"></div>
+        <div class="mh-shade"></div>
+      </div>
+      <span class="ph-tag mh-ph">Concept art background</span>
+
+      <div class="mh-content">
+        <div class="logo-lockup reveal">
+          <span class="ll-kanji" lang="ja">刹那決戦</span>
+          <span class="ll-word" data-game-split>Setsuna<br>Kessen</span>
+        </div>
+        <!-- TODO: replace href with the real Roblox game URL (or set CONFIG.ROBLOX_URL in script.js) -->
+        <a href="#" class="btn btn-primary btn-ornate reveal" data-roblox><span>Play on Roblox</span></a>
+        <button class="mh-trailer reveal" data-open-trailer>
+          <span class="mh-trailer-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
+          Watch the trailer <em>Placeholder</em>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ 2. FEATURED NEWS (patch notes as news cards) ============ -->
+    <section class="blade light news" id="news">
+      <div class="wrap">
+        <div class="blade-head">
+          <h2 class="h-section">Featured News</h2>
+          <div class="blade-head-right">
+            <span class="ph-inline">Placeholder news</span>
+            <button class="link-arrow" data-open-patch="0">View all <i>→</i></button>
+          </div>
+        </div>
+        <div class="news-rail" id="newsRail"></div>
+        <div class="rail-ctrl">
+          <div class="rail-progress"><i id="newsProgress"></i></div>
+          <button class="arrow-btn" id="newsPrev" aria-label="Previous">←</button>
+          <button class="arrow-btn" id="newsNext" aria-label="Next">→</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STORY (v9) ============ -->
+    <section class="blade v9 story" id="story">
+      <div class="wrap split v9-split">
+        <div class="v9-text">
+          <p class="kicker reveal">The story</p>
+          <h2 class="h-blade reveal">Seven seconds changed everything.</h2>
+          <p class="blade-copy reveal">Seven years ago, the city of Aurel Bay stopped. Clocks, traffic, voices — frozen for seven seconds. When the world moved again, hundreds of people woke with a <strong>Resonance</strong>: a personal rule the world would briefly obey.</p>
+          <div class="more" id="storyMore" hidden>
+            <h3>Vesperreach Academy</h3>
+            <p>Vesperreach was founded to teach control, duty, and the art of the <strong>Kessen</strong> — a short, sanctioned duel decided in a single decisive moment. Graduates who pass the Registry's trials become <strong>Wardens</strong>, licensed to protect the city.</p>
+            <h3>Your story begins late.</h3>
+            <p>You arrive as a first-year whose Resonance woke late. Orientation Week starts now: a campus tour, a gym lesson, and your first Kessen under a proctor's eye.<br>But in the plaza, the memorial clocks have started losing time again...</p>
+          </div>
+          <button class="more-btn reveal" type="button" aria-expanded="false" aria-controls="storyMore" data-more>Read more</button>
+        </div>
+        <figure class="v9-media reveal">
+          <img src="assets/story.webp" alt="A fighter in a long coat channels red fire in the ruins of a city" width="610" height="860" loading="lazy" decoding="async">
+          <span class="ph-tag">Concept art</span>
+        </figure>
+      </div>
+      <div class="wrap">
+        <h3 class="v9-label reveal">Factions</h3>
+        <ul class="factions reveal">
+          <li><strong>Vesperreach Academy</strong><span>Teach control. Protect students. Host the Kessen.</span></li>
+          <li><strong>The Ward Registry</strong><span>License, law, and public duty for adult Wardens.</span></li>
+          <li><strong>The Night Ledger</strong><span>An unsanctioned rooftop circuit. Fame, coin, fewer rules.</span></li>
+          <li><strong>Aperture Cell</strong><span>They catalog Resonances. Some whisper they copy them.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 3. CHOOSE YOUR FIGHTER (v8: 100-fighter roster grid) ============ -->
+    <section class="blade roster" id="fighters">
+      <div class="watermark" lang="ja" aria-hidden="true">決</div>
+      <div class="wrap">
+        <div class="rs-head">
+          <div>
+            <p class="kicker reveal">Choose your</p>
+            <h2 class="h-blade reveal">Fighter</h2>
+            <p class="blade-copy reveal">One hundred fighters across ten elements. Find your element, pick your fighter, and wait for the instant.</p>
+          </div>
+          <span class="rs-concept reveal">Concept art</span>
+        </div>
+        <div class="rs-controls reveal">
+          <label class="rs-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search fighters by name</span>
+            <input type="search" id="rosterSearch" placeholder="Search fighters by name" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="rs-chips" id="rosterChips" role="group" aria-label="Filter by element"></div>
+        </div>
+        <p class="rs-count" id="rosterCount" aria-live="polite">Showing 100 fighters</p>
+        <div class="rs-grid" id="rosterGrid"></div>
+        <div class="rs-more-wrap"><button type="button" class="btn btn-gold rs-more" id="rosterMore" aria-controls="rosterGrid" aria-expanded="false">Show all 100 fighters</button></div>
+        <p class="rs-empty" id="rosterEmpty" hidden>No fighters match that search. <button type="button" id="rosterReset">Clear filters</button></p>
+      </div>
+    </section>
+
+    <!-- ============ HOW TO PLAY (v9) ============ -->
+    <section class="blade v9 howto" id="howtoplay">
+      <div class="wrap">
+        <header class="v9-head">
+          <p class="kicker reveal">How to play</p>
+          <h2 class="h-blade reveal">Every fight is decided in an instant.</h2>
+        </header>
+        <ol class="howto-grid">
+          <li class="reveal"><span class="ht-num">01</span><h3>Strike</h3><p class="ht-sub">M1 Combo</p><p>Chain four quick hits. The last hit cancels straight into an ability.</p></li>
+          <li class="reveal"><span class="ht-num">02</span><h3>Defend</h3><p class="ht-sub">Block &amp; Parry</p><p>Block to soak damage, but it drains stamina. Parry at the last instant to stun your attacker and get a free dash back.</p></li>
+          <li class="reveal"><span class="ht-num">03</span><h3>Move</h3><p class="ht-sub">Dash &amp; Stamina</p><p>Dash in any direction, plus one air dash. Dashing and blocking share one stamina bar — run dry and you're open.</p></li>
+          <li class="reveal"><span class="ht-num">04</span><h3>Unleash</h3><p class="ht-sub">Awakening</p><p>Deal damage and land parries to fill your meter. At 100%, enter <strong>Setsuna</strong>: about 8–10 seconds of a powered-up kit and your fighter's ultimate. One decisive moment can win the round.</p></li>
+        </ol>
+        <div class="ht-modes reveal" aria-label="Planned modes">
+          <span class="ht-modes-label">Modes <em>Planned · not live yet</em></span>
+          <ul>
+            <li><b>1v1</b><span class="planned">Planned</span></li>
+            <li><b>3v3</b><span class="planned">Planned</span></li>
+            <li><b>5v5</b><span class="planned">Planned</span></li>
+            <li class="ht-city"><span class="ph-tag">Concept art</span><span class="planned">Planned</span><b>Aurel Bay — Open City</b><small>Free-for-all hub, about 20 players. Queue for 1v1, 3v3 or 5v5 from inside the city.</small></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. MULTIPLE WAYS TO FIGHT (game modes) ============ -->
+    <section class="blade dark modes" id="modes">
+      <div class="wrap split">
+        <div class="split-text">
+          <p class="kicker reveal">Multiple ways to</p>
+          <h2 class="h-blade reveal">Fight</h2>
+          <p class="blade-copy reveal">Quick duels, team clashes, battle royale or co-op raids — pick the arena that fits your squad and your mood.</p>
+          <div class="btn-row reveal"><a href="#" class="btn btn-primary" data-roblox>Play now</a></div>
+          <div class="mode-tabs reveal" id="modeTabs" role="tablist" aria-label="Game modes"></div>
+        </div>
+        <div class="split-media">
+          <div class="ring-stage ring-stage-mode" id="modeStage">
+            <span class="ph-tag">Placeholder art</span>
+            <div class="ring ring-gold"><svg viewBox="0 0 100 100" class="ring-arc"><circle cx="50" cy="50" r="49" /></svg></div>
+            <div class="ring-disc" id="modeArt"></div>
+          </div>
+          <div class="stage-caption" id="modeCaption"></div>
+        </div>
+      </div>
+
+      <div class="wrap features" id="features">
+        <div class="features-head reveal">
+          <p class="kicker">Built for the</p>
+          <h3 class="h-sub">Clutch moment</h3>
+          <span class="ph-inline ph-inline-dark">Placeholder features</span>
+        </div>
+        <ul class="feature-grid" id="featureList"></ul>
+      </div>
+    </section>
+
+    <!-- ============ ARENAS (v9, placeholder slots for training-arena shots) ============ -->
+    <section class="blade v9 arenas" id="arenas">
+      <div class="wrap">
+        <header class="v9-head">
+          <p class="kicker reveal">Where you fight</p>
+          <h2 class="h-blade reveal">Arenas</h2>
+        </header>
+        <div class="arena-grid">
+          <figure class="arena-slot arena-main reveal"><span class="ph-tag">Placeholder</span><figcaption><b>Gameplay screenshot coming soon</b><small>Training arena · 01</small></figcaption></figure>
+          <figure class="arena-slot reveal"><span class="ph-tag">Placeholder</span><figcaption><b>Gameplay screenshot coming soon</b><small>Training arena · 02</small></figcaption></figure>
+          <figure class="arena-slot reveal"><span class="ph-tag">Placeholder</span><figcaption><b>Gameplay screenshot coming soon</b><small>Training arena · 03</small></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. CODES & REWARDS (media promo blade) ============ -->
+    <section class="blade dark promo" id="codes">
+      <div class="promo-bg" aria-hidden="true" data-parallax="0.12"></div>
+      <div class="wrap split promo-split">
+        <div class="diamond-stage reveal" aria-hidden="true">
+          <div class="diamond"></div>
+          <div class="diamond-art" id="promoArt"></div>
+          <span class="ph-tag">Placeholder art</span>
+        </div>
+        <div class="promo-text">
+          <p class="kicker kicker-italic reveal">Claim your</p>
+          <h2 class="h-blade reveal">Rewards</h2>
+          <p class="blade-copy reveal">Redeem codes in-game from the <strong>Codes</strong> menu for gems, boosts and cosmetics. Tap a code to copy it. <span class="ph-inline ph-inline-dark">Placeholder codes — not redeemable</span></p>
+          <div class="codes" id="codesList"></div>
+          <a href="#" class="btn btn-primary reveal" data-roblox>Play now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ROADMAP (v9, no dates) ============ -->
+    <section class="blade v9 roadmap" id="roadmap">
+      <div class="wrap">
+        <header class="v9-head">
+          <p class="kicker reveal">No dates yet</p>
+          <h2 class="h-blade reveal">Roadmap</h2>
+        </header>
+        <ol class="road">
+          <li class="reveal is-now"><span class="road-dot"></span><span class="road-step">01</span><h3>Prototype</h3><span class="road-badge">In progress</span><p>First fighter playable. Core combat: combos, block, parry, dash, Awakening.</p></li>
+          <li class="reveal"><span class="road-dot"></span><span class="road-step">02</span><h3>Vertical Slice</h3><p>Polished fighters, first real arena, VFX and sound pass.</p></li>
+          <li class="reveal"><span class="road-dot"></span><span class="road-step">03</span><h3>Roster Build</h3><p>More fighters added in element waves, private playtests after each.</p></li>
+          <li class="reveal"><span class="road-dot"></span><span class="road-step">04</span><h3>Closed Beta</h3><p>Invite-only testing with the community. Join the Discord to get in.</p></li>
+          <li class="reveal"><span class="road-dot"></span><span class="road-step">05</span><h3>Launch</h3><p>Ranked 1v1, more modes, cosmetic shop <span class="p2w">(cosmetics only, never pay-to-win)</span>.</p></li>
+        </ol>
+        <p class="road-foot reveal"><em>Dates announced when we're sure. Follow the Discord for updates.</em></p>
+      </div>
+    </section>
+
+    <!-- ============ 6. CENTERED PROMOTION (Discord community) ============ -->
+    <section class="centered-promo" id="community">
+      <div class="cp-content">
+        <p class="kicker kicker-italic reveal">Join</p>
+        <h2 class="sr-only"><span data-game-name>Setsuna Kessen</span></h2>
+        <figure class="cp-banner reveal"><img src="assets/brand/banner.webp" alt="Setsuna Kessen key art banner: two fighters face off in a ruined city under a red sky" width="1280" height="572" loading="lazy" decoding="async"><span class="ph-tag">Concept art</span></figure>
+        <p class="blade-copy reveal">Find teammates, catch update drops first, enter tournaments and get exclusive codes in the official Discord.</p>
+        <div class="cp-stats reveal">
+          <div><strong data-count="12400">12.4K</strong><span>Members</span></div>
+          <div><strong data-count="48">48</strong><span>Tournaments</span></div>
+          <div><strong data-count="300">300+</strong><span>Codes dropped</span></div>
+        </div>
+        <span class="ph-inline ph-inline-dark reveal">Placeholder stats</span>
+        <!-- TODO: replace href with the real Discord invite (or set CONFIG.DISCORD_URL in script.js) -->
+        <a href="#" class="btn btn-primary btn-ornate reveal" data-discord><span>Join Discord</span></a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <nav class="footer-bar" aria-label="Footer">
+      <a href="#top">About <span data-game-name>Setsuna Kessen</span></a>
+      <a href="#news" data-open-patch="0">Patch notes</a>
+      <a href="#story">Story</a>
+      <a href="#fighters">Fighters</a>
+      <a href="#howtoplay">How to play</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#codes">Codes</a>
+      <a href="#" data-discord>Discord</a>
+    </nav>
+    <div class="footer-main">
+      <!-- TODO: replace social hrefs with real channel URLs -->
+      <div class="socials">
+        <a href="#" aria-label="Discord (TODO)" data-discord><svg viewBox="0 0 24 24"><path d="M5 6h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-6l-4 3v-3H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="11.5" r="1.3" fill="currentColor"/><circle cx="15" cy="11.5" r="1.3" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="YouTube (TODO)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="X (TODO)"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+        <a href="#" aria-label="TikTok (TODO)"><svg viewBox="0 0 24 24"><path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5M14 4c.5 2.5 2.5 4 5 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></a>
+      </div>
+      <a href="#top" class="footer-logo" aria-label="Setsuna Kessen home"><span class="brand-logo" role="img" aria-label="Setsuna Kessen"></span></a>
+      <p class="legal">© <span id="year"></span> <span data-game-name>Setsuna Kessen</span>. An independent game on Roblox. Not affiliated with, sponsored or endorsed by Roblox Corporation.</p>
+      <nav class="legal-links">
+        <a href="#">Privacy notice</a><a href="#">Terms of service</a><a href="#">Contact</a>
+      </nav>
+      <div class="notice-box">
+        <span class="notice-badge">Preview</span>
+        <ul>
+          <li>Concept-art fighter roster; placeholder abilities</li>
+          <li>Placeholder codes &amp; rewards</li>
+          <li>Placeholder patch notes &amp; stats</li>
+          <li>Placeholder art &amp; trailer</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Promo bar (dismissible, like a season announcement strip) -->
+  <aside class="promo-bar" id="promoBar">
+    <div class="pb-art" aria-hidden="true"><span lang="ja">刹那決戦</span></div>
+    <div class="pb-text">
+      <span class="pb-kicker">Season 01 <em class="ph-inline ph-inline-dark">Placeholder</em></span>
+      <strong>Storm Season<br class="m-br"> is live</strong>
+    </div>
+    <button class="btn btn-gold btn-round" data-open-patch="0">Learn more</button>
+    <button class="pb-close" id="promoClose" aria-label="Close announcement">×</button>
+  </aside>
+
+  <!-- Trailer modal -->
+  <div class="modal" id="trailerModal" aria-hidden="true" role="dialog" aria-label="Trailer">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-body">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div class="modal-video">
+        <!-- TODO: replace this placeholder with an embedded trailer (e.g. YouTube iframe) -->
+        <div class="modal-ph">
+          <span class="ph-tag">Placeholder trailer</span>
+          <span class="ll-kanji" lang="ja">刹那決戦</span>
+          <div class="modal-ph-title" data-game-name>Setsuna Kessen</div>
+          <p>Official trailer coming soon.</p>
+          <div class="modal-ph-bar"><i></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patch notes modal -->
+  <div class="modal" id="patchModal" aria-hidden="true" role="dialog" aria-label="Patch notes">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-body modal-article">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <div class="article" id="patchArticle"></div>
+    </div>
+  </div>
+
+  <!-- Fighter card modal (v8) -->
+  <div class="modal" id="fighterModal" aria-hidden="true" role="dialog" aria-labelledby="fmName">
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-body fm-body">
+      <button class="modal-close" data-close aria-label="Close">×</button>
+      <figure class="fm-card">
+        <div class="fm-art"><span class="fm-noart">No card art yet</span><img id="fmImg" alt="" width="864" height="1152"></div>
+        <figcaption class="fm-cap">
+          <span class="fm-el" id="fmEl"></span>
+          <h3 id="fmName"></h3>
+          <span class="fm-role" id="fmRole" hidden></span>
+          <p class="fm-num" id="fmNum"></p>
+          <span class="rs-concept">Concept art</span>
+          <div class="fm-abilities">
+            <p class="fm-ab-title">Abilities</p>
+            <div class="ab-row" id="fmKit" role="tablist" aria-label="Abilities"></div>
+            <div class="ab-info" id="fmAbility" aria-live="polite"></div>
+            <p class="ab-note" id="fmKitNote"></p>
+          </div>
+          <div class="fm-nav">
+            <button class="arrow-btn" id="fmPrev" aria-label="Previous fighter">←</button>
+            <button class="arrow-btn" id="fmNext" aria-label="Next fighter">→</button>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Shared SVG symbol: original stylized fighter silhouette (placeholder art) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="fighter-shape">
+        <circle cx="203" cy="96" r="27"/>
+        <polygon points="170,104 146,72 174,80 168,46 194,66 204,32 218,62 242,42 234,78 262,74 236,108 203,120"/>
+        <polygon points="210,120 280,104 352,122 300,134 252,142"/>
+        <polygon points="188,118 140,140 112,200 92,262 114,274 134,214 148,192 150,260 128,330 92,432 140,420 150,470 118,592 166,592 186,470 200,382 216,470 250,592 298,592 264,470 270,420 322,444 282,330 254,260 258,192 278,226 300,252 320,236 292,198 264,142 214,118"/>
+      </g>
+    </defs>
+  </svg>
+
+  <script src="script.js"></script>
+</body>
+</html>
