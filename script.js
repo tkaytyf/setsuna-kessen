@@ -517,10 +517,10 @@ const FIGHTER_KITS_SOURCE = [
 ];
 const kitSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const FIGHTER_KITS = Object.fromEntries(FIGHTER_KITS_SOURCE.map((k) => [kitSlug(k.name), k]));
-const kitAbilities = (k, el) => [
+const kitAbilities = (k, el) => (typeof kitAbilitiesV13 === "function" ? kitAbilitiesV13(k, el) : [
   ...k.moves.map((m, i) => ({ key: m.key, slot: `Move ${["I", "II", "III", "IV"][i]}`, name: m.name, desc: m.desc, cd: m.cooldown, icon: m.icon || el })),
   { key: k.awakening.key || "G", slot: "Awakening", name: k.awakening.name, desc: k.awakening.desc, icon: k.awakening.icon || el },
-];
+]);
 const KIT_SLOTS = [["1", "Move I"], ["2", "Move II"], ["3", "Move III"], ["4", "Move IV"], ["G", "Awakening"]];
 const placeholderKit = (el) => KIT_SLOTS.map(([key, slot]) => ({ key, slot, name: "Placeholder: kit coming soon", desc: "Ability details will be added when this fighter's kit is designed.", icon: el, ph: true }));
 
@@ -749,7 +749,7 @@ function renderRoster() {
   if (!grid || !chips) return;
   const counts = ELEMENTS.reduce((o, e) => ((o[e] = ROSTER.filter((f) => f.el === e).length), o), {});
   chips.innerHTML = [["all", "All", ROSTER.length], ...ELEMENTS.map((e) => [e, cap(e), counts[e]])].map(([k, label, c]) =>
-    `<button type="button" class="rs-chip${k === "all" ? " active" : ""}" data-el="${k}" aria-pressed="${k === "all"}">${k === "all" ? "" : elIcon(k, 20)}${label}<small>${c}</small></button>`).join("");
+    `<button type="button" class="rs-chip${k === "all" ? " active" : ""}" data-el="${k}" aria-pressed="${k === "all"}">${k === "all" ? "" : `<span class="el-dot" data-el="${k}"></span>${elIcon(k, 20)}`}${label}<small>${c}</small></button>`).join("");
   grid.innerHTML = ROSTER.map((f, i) => fighterCardHTML(f, i)).join("");
   const cards = $$(".rs-card", grid);
   const apply = () => {
@@ -828,11 +828,11 @@ function bindFighterGrid(grid) {
     const pick = (k) => {
       const a = abil[k];
       $$(".ab-btn", row).forEach((b, j) => { b.classList.toggle("active", j === k); b.setAttribute("aria-selected", j === k); });
-      info.innerHTML = `<p class="ab-meta"><span>${a.slot}</span><span class="ab-keycap">Key ${a.key}</span>${a.cd ? `<span class="ab-cd">${a.cd}s cooldown</span>` : a.slot === "Awakening" && !a.ph ? `<span class="ab-cd">At 100% meter</span>` : ""}</p>
-        <h4 class="${a.ph ? "is-ph" : ""}">${a.name}</h4><p class="ab-desc">${a.desc}</p>`;
+      info.innerHTML = `<p class="ab-meta"><span>${a.slot}</span><span class="ab-keycap">Key ${a.key}</span>${a.cd ? `<span class="ab-cd">${a.cd}s cooldown</span>` : a.slot === "Awakening" && !a.ph ? `<span class="ab-cd">At 100% meter</span>` : ""}${a.damage ? `<span class="ab-cd">${a.damage} damage</span>` : ""}${a.range ? `<span class="ab-cd">range ${a.range}</span>` : ""}${a.duration ? `<span class="ab-cd">${a.duration}s duration</span>` : ""}</p>
+        <h4 class="${a.ph ? "is-ph" : ""}">${a.name}</h4><p class="ab-desc">${a.desc || ""}</p>${typeof moveExtras === "function" ? moveExtras(a) : ""}`;
     };
     $$(".ab-btn", row).forEach((b) => { const k = +b.dataset.k; b.addEventListener("click", () => pick(k)); b.addEventListener("mouseenter", () => pick(k)); b.addEventListener("focus", () => pick(k)); });
-    $("#fmKitNote").textContent = hasKit ? "" : "Placeholder abilities — this fighter's kit is not designed yet.";
+    $("#fmKitNote").textContent = hasKit ? "Values from current build, may change after playtests." : "Placeholder abilities — this fighter's kit is not designed yet.";
     pick(0);
   };
   const show = (i) => {
@@ -927,8 +927,8 @@ function selectMode(i) {
 
 /* ---------------- Codes ---------------- */
 const ICO_GEM = `<svg class="rw-ico rw-gem" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="#0AC8B9" d="M8 1.6 14.2 6.4 8 14.4 1.8 6.4z"/><path fill="#087F78" d="M8 1.6 11.4 6.4H4.6z"/><path fill="#0A5E5A" d="M4.6 6.4h6.8L8 14.4z" opacity=".55"/></svg>`;
-const ICO_TITLE = `<svg class="rw-ico rw-title" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#C8AA6E" stroke-width="1.3" d="M2.2 4.2h11.6v8.2L8 11.2 2.2 12.4z"/><path fill="none" stroke="#C8AA6E" stroke-width="1.3" d="M3.6 6.4h8.8M3.6 8.6h6.2"/></svg>`;
-const ICO_SCARF = `<svg class="rw-ico rw-scarf" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#C8AA6E" stroke-width="1.35" stroke-linecap="round" d="M3.2 5c2.2-2.2 6.2-2 6.4.8.2 1.8-1.8 2.2-1.8 4.2 0 1.5 1.3 2.4 2.8 2.2"/><path fill="none" stroke="#C8AA6E" stroke-width="1.35" stroke-linecap="round" d="M8.4 5.6c1.3-1.1 3.6-.8 4.4.8"/></svg>`;
+const ICO_TITLE = `<svg class="rw-ico rw-title" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#FFFFFF" stroke-width="1.3" d="M2.2 4.2h11.6v8.2L8 11.2 2.2 12.4z"/><path fill="none" stroke="#FFFFFF" stroke-width="1.3" d="M3.6 6.4h8.8M3.6 8.6h6.2"/></svg>`;
+const ICO_SCARF = `<svg class="rw-ico rw-scarf" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="none" stroke="#FFFFFF" stroke-width="1.35" stroke-linecap="round" d="M3.2 5c2.2-2.2 6.2-2 6.4.8.2 1.8-1.8 2.2-1.8 4.2 0 1.5 1.3 2.4 2.8 2.2"/><path fill="none" stroke="#FFFFFF" stroke-width="1.35" stroke-linecap="round" d="M8.4 5.6c1.3-1.1 3.6-.8 4.4.8"/></svg>`;
 function rewardLine(reward) {
   return reward.split(/\s*\+\s*/).map((part) => {
     const ico = /gem/i.test(part) ? ICO_GEM : /title/i.test(part) ? ICO_TITLE : /scarf/i.test(part) ? ICO_SCARF : "";
@@ -1016,7 +1016,7 @@ function initNav() {
   $$(".dd-toggle").forEach((t) => t.addEventListener("click", () => { const o = t.parentElement.classList.toggle("open"); t.setAttribute("aria-expanded", o); }));
   const links = $$(".mainnav > a[href^='#']:not([data-open-patch])");
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id)); }), { rootMargin: "-45% 0px -50% 0px" });
-  ["news", "story", "fighters", "howtoplay", "modes", "arenas", "codes", "wallpapers", "roadmap", "community"].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  ["news", "story", "fighters", "quiz", "compare", "howtoplay", "modes", "arenas", "map", "codes", "wallpapers", "roadmap", "devlog", "community"].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   const phClose = $(".ph-banner-close"); if (phClose) phClose.addEventListener("click", () => document.body.classList.add("banner-hidden"));
   const promoClose = $("#promoClose"); if (promoClose) promoClose.addEventListener("click", () => $("#promoBar").classList.add("hide"));
 }
@@ -1058,7 +1058,6 @@ function initParallax() {
       let base = "";
       if (el.classList.contains("mh-figure-l")) base = "scaleX(-1) ";
       else if (el.classList.contains("mh-kanji")) base = "translate(-50%,-50%) ";
-      else if (el.classList.contains("mh-video-stage")) base = "translate(-50%,-54%) ";
       el.style.transform = `${base}translate3d(0, ${y.toFixed(1)}px, 0)`;
     });
     tick = false;
@@ -1092,7 +1091,6 @@ function initCinematicVideo(sel, stageSel) {
 }
 function initPromoVideo() {
   initCinematicVideo("#promoVideo", "#promoStage");
-  initCinematicVideo("#heroVideo", "#heroVideoStage");
 }
 function initCounters() {
   const io = new IntersectionObserver((es) => es.forEach((e) => {
@@ -1106,11 +1104,349 @@ function initCounters() {
 
 document.addEventListener("DOMContentLoaded", () => {
   applyConfig();
+  bindComingSoonDiscord();
   if ($("#newsRail")) renderNews();
   if ($("#rosterGrid")) renderRoster();
   if ($("#elementGrid")) renderElementPage();
+  renderElementSwatches();
   if ($("#codesList")) renderCodes();
   if ($("#modeTabs")) renderModes();
+  initQuiz(); initCompare(); initMap();
   initPromoVideo();
   initNav(); initMore(); initModals(); initReveal(); initParallax(); initParticles(); initCounters();
 });
+
+
+/* ---------- v13: official move numbers, quiz, compare, map, community ---------- */
+const FIGHTER_MOVES_SOURCE = {"source":"Setsuna Kessen M1 scripts (real in-game numbers, pre-playtest)","fighters":[{"id":"Tovin","name":"Tovin Rusk","resonance":"Shardmail","role":"All-rounder / midrange","moves":[{"key":"1","name":"Plate Throw","kind":"projectile","cooldown":6,"damage":70,"range":45},{"key":"2","name":"Shell Up","kind":"shield","cooldown":10,"damage":0,"range":0,"duration":3,"recast":{"name":"Shell Shatter","damage":90}},{"key":"3","name":"Rib Spike","kind":"melee","cooldown":8,"damage":95,"range":5},{"key":"4","name":"Scatter Step","kind":"dash","cooldown":9,"damage":0,"range":24}],"awakening":{"key":"G","name":"Kiln Break","kind":"detonate","cooldown":0,"damage":140,"range":16,"duration":9}},{"id":"Jastel","name":"Jastel Vohl","resonance":"","role":"Rushdown","moves":[{"key":"1","name":"Hook Chain","kind":"melee","cooldown":8,"damage":50,"range":14},{"key":"2","name":"Last Link","kind":"detonate","cooldown":12,"damage":0,"range":0},{"key":"3","name":"Sweep Weight","kind":"melee","cooldown":7,"damage":75,"range":6},{"key":"4","name":"Chain Rush","kind":"dash","cooldown":9,"damage":0,"range":10}],"awakening":{"key":"G","name":"Burning Circuit","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9,"finisher":{"name":"Circuit Ring","damage":110}}},{"id":"Kald","name":"Kald Eschen","resonance":"","role":"Tank","moves":[{"key":"1","name":"Living Pavise","kind":"shield","cooldown":8,"damage":0,"range":0,"duration":4},{"key":"2","name":"Close the Lane","kind":"melee","cooldown":12,"damage":60,"range":8},{"key":"3","name":"Regrowth","kind":"buff","cooldown":14,"damage":0,"range":0},{"key":"4","name":"Root Plant","kind":"zone","cooldown":10,"damage":0,"range":4,"duration":8,"recast":{"name":"Recall Pavise","damage":0}}],"awakening":{"key":"G","name":"Full Canopy","kind":"shield","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Nedi","name":"Nedi Rime","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Throw Mirror","kind":"zone","cooldown":8,"damage":0,"range":12,"duration":10},{"key":"2","name":"Shatter Swap","kind":"teleport","cooldown":10,"damage":0,"range":45},{"key":"3","name":"Opposite Cut","kind":"melee","cooldown":7,"damage":80,"range":7},{"key":"4","name":"Bait Shatter","kind":"buff","cooldown":13,"damage":0,"range":0}],"awakening":{"key":"G","name":"Broken Reflection","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Pixa","name":"Pixa Noll","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Pocket Dark","kind":"zone","cooldown":9,"damage":0,"range":8,"duration":3},{"key":"2","name":"Crouch Step","kind":"teleport","cooldown":10,"damage":0,"range":25},{"key":"3","name":"Low Cut","kind":"melee","cooldown":6,"damage":70,"range":6},{"key":"4","name":"Snuff Field","kind":"zone","cooldown":14,"damage":0,"range":0,"duration":6}],"awakening":{"key":"G","name":"Total Snuff","kind":"zone","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Sael","name":"Sael Orin","resonance":"","role":"Support","moves":[{"key":"1","name":"Still Banner","kind":"zone","cooldown":12,"damage":0,"range":0,"duration":8},{"key":"2","name":"Soft Landing","kind":"buff","cooldown":8,"damage":0,"range":30},{"key":"3","name":"Low Ceiling","kind":"zone","cooldown":10,"damage":0,"range":0,"duration":5},{"key":"4","name":"Banner Shift","kind":"teleport","cooldown":14,"damage":0,"range":60}],"awakening":{"key":"G","name":"Held Ground","kind":"zone","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Sirae","name":"Sirae Holt","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Ember Bolt","kind":"projectile","cooldown":6,"damage":60,"range":45},{"key":"2","name":"Coil Shot","kind":"projectile","cooldown":9,"damage":85,"range":45},{"key":"3","name":"Ember Bloom","kind":"detonate","cooldown":11,"damage":0,"range":0},{"key":"4","name":"Ember Drop","kind":"dash","cooldown":8,"damage":0,"range":10}],"awakening":{"key":"G","name":"Full Coil","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Tamsin","name":"Tamsin Orel","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Silent Needles","kind":"projectile","cooldown":6,"damage":25,"range":50},{"key":"2","name":"Lane Pin","kind":"zone","cooldown":10,"damage":0,"range":14,"duration":6},{"key":"3","name":"Pressure Break","kind":"detonate","cooldown":12,"damage":0,"range":0},{"key":"4","name":"Draft Cut","kind":"dash","cooldown":8,"damage":0,"range":12}],"awakening":{"key":"G","name":"Held Breath","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Tesen","name":"Tesen Wynn","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Flare Coin","kind":"projectile","cooldown":7,"damage":20,"range":22},{"key":"2","name":"Look-Away","kind":"dash","cooldown":6,"damage":60,"range":12},{"key":"3","name":"False Tell","kind":"projectile","cooldown":10,"damage":0,"range":20,"recast":{"name":"False Tell Blink","damage":0}},{"key":"4","name":"Glint Guard","kind":"buff","cooldown":12,"damage":0,"range":0}],"awakening":{"key":"G","name":"All Eyes","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Varek","name":"Varek Ashe","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Cinder Pitch","kind":"projectile","cooldown":6,"damage":70,"range":45},{"key":"2","name":"Ash Wall","kind":"zone","cooldown":12,"damage":0,"range":8,"duration":5},{"key":"3","name":"Searing Fan","kind":"melee","cooldown":8,"damage":80,"range":10},{"key":"4","name":"Ember Rise","kind":"dash","cooldown":10,"damage":0,"range":12}],"awakening":{"key":"G","name":"Ashwake","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9,"finisher":{"name":"Ashwake Burst","damage":140}}}]};
+const AUREL_BAY_MAP = {"city":"Aurel Bay","note":"Layout for the interactive site map. Positions are percentages of the map image (x from left, y from top). Status: 'building' = in progress, 'planned' = coming later. Only Academy Plaza is being built first.","palette":{"navy":"#141C2D","slate":"#19191C","gold":"#C8AA6E","road":"#2D2D32"},"districts":[{"id":"academy-plaza","name":"Academy Plaza","x":50,"y":38,"status":"building","blurb":"The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.","features":["Safe spawn at the academy gates","Mode queue spots","Tournament stage","Fountain hangout (no fighting)"]},{"id":"academy-hill","name":"Academy Hill","x":50,"y":14,"status":"planned","blurb":"The academy campus on the hill behind the plaza, with training grounds and the courtyard.","features":["Training grounds","Academy courtyard (safe zone)"]},{"id":"harbor","name":"Gold Harbor","x":22,"y":78,"status":"planned","blurb":"Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.","features":["Container maze","Pier lookout"]},{"id":"market","name":"Lantern Market","x":78,"y":62,"status":"planned","blurb":"Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.","features":["Shop stalls","Rooftop chase routes"]},{"id":"skyline","name":"Skyline Ward","x":80,"y":24,"status":"planned","blurb":"Tall towers and rooftop bridges for vertical, dash-heavy fights.","features":["Rooftop bridges","Highest lookout in the city"]},{"id":"old-quarter","name":"Old Quarter","x":20,"y":34,"status":"planned","blurb":"Stone streets and a ruined shrine where live-event rifts open.","features":["Rift event zone","Shrine ruins"]}],"arenas":[{"name":"Training Arena","size":"120x120 studs","mode":"Practice vs dummies","status":"building"},{"name":"Duel Arena","size":"120x120 studs","mode":"Ranked Duels 1v1","status":"planned"},{"name":"Squad Arena","size":"about 200x200 studs","mode":"3v3","status":"planned"},{"name":"Legion Arena","size":"about 260x260 studs","mode":"Legion War 5v5","status":"planned"}]};
+const FIGHTER_MOVES = Object.fromEntries((FIGHTER_MOVES_SOURCE.fighters || []).map((f) => [kitSlug(f.name), f]));
+
+const ELEMENT_COLORS = {
+  flame: { main: "rgb(200, 70, 40)", accent: "rgb(230, 160, 60)" },
+  water: { main: "rgb(40, 110, 170)", accent: "rgb(150, 200, 220)" },
+  ice: { main: "rgb(150, 200, 225)", accent: "rgb(235, 245, 250)" },
+  wind: { main: "rgb(170, 200, 180)", accent: "rgb(235, 240, 230)" },
+  earth: { main: "rgb(120, 90, 60)", accent: "rgb(170, 150, 110)" },
+  lightning: { main: "rgb(230, 200, 80)", accent: "rgb(140, 120, 200)" },
+  metal: { main: "rgb(140, 145, 155)", accent: "rgb(200, 170, 110)" },
+  nature: { main: "rgb(80, 140, 70)", accent: "rgb(170, 200, 90)" },
+  light: { main: "rgb(235, 215, 160)", accent: "rgb(255, 245, 220)" },
+  shadow: { main: "rgb(45, 35, 60)", accent: "rgb(120, 60, 110)" },
+};
+
+function mergeKitWithMoves(kit) {
+  const mv = FIGHTER_MOVES[kitSlug(kit.name)];
+  if (!mv) return kit;
+  const byKey = Object.fromEntries((mv.moves || []).map((m) => [String(m.key), m]));
+  const moves = (kit.moves || []).map((m) => {
+    const n = byKey[String(m.key)] || {};
+    const out = { ...m };
+    ["cooldown", "damage", "range", "duration", "kind", "recast"].forEach((k) => { if (n[k] != null) out[k] = n[k]; });
+    return out;
+  });
+  const awn = mv.awakening || {};
+  const awakening = { ...(kit.awakening || {}) };
+  ["name", "key", "cooldown", "damage", "range", "duration", "kind", "finisher"].forEach((k) => {
+    if (k === "name" && awakening.name) return;
+    if (awn[k] != null) awakening[k] = awn[k];
+  });
+  return { ...kit, role: kit.role || mv.role, resonance: kit.resonance || mv.resonance, moves, awakening, fromBuild: true };
+}
+
+function allCodedKits() {
+  const names = new Set([
+    ...FIGHTER_KITS_SOURCE.map((k) => k.name),
+    ...((FIGHTER_MOVES_SOURCE.fighters || []).map((f) => f.name)),
+  ]);
+  return [...names].map((name) => {
+    const base = FIGHTER_KITS[kitSlug(name)] || { name, moves: (FIGHTER_MOVES[kitSlug(name)] || {}).moves || [], awakening: (FIGHTER_MOVES[kitSlug(name)] || {}).awakening || { name: "Awakening", key: "G" } };
+    if (!FIGHTER_KITS[kitSlug(name)] && FIGHTER_MOVES[kitSlug(name)]) {
+      const mv = FIGHTER_MOVES[kitSlug(name)];
+      return mergeKitWithMoves({ name: mv.name, element: mv.element, role: mv.role, resonance: mv.resonance, moves: (mv.moves || []).map((m) => ({ key: m.key, name: m.name, desc: m.desc || "", cooldown: m.cooldown })), awakening: { key: (mv.awakening || {}).key || "G", name: (mv.awakening || {}).name, desc: (mv.awakening || {}).desc || "" } });
+    }
+    return mergeKitWithMoves(base);
+  }).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function moveStatLine(m) {
+  const bits = [];
+  if (m.cd || m.cooldown) bits.push(`${m.cd || m.cooldown}s cooldown`);
+  if (m.damage) bits.push(`${m.damage} damage`);
+  if (m.range) bits.push(`range ${m.range}`);
+  if (m.duration) bits.push(`${m.duration}s duration`);
+  return bits.join(" · ");
+}
+
+function moveExtras(m) {
+  let html = "";
+  if (m.recast && m.recast.name) html += `<p class="ab-extra">Recast: ${m.recast.name}${m.recast.damage ? ` · ${m.recast.damage} damage` : ""}</p>`;
+  if (m.finisher && m.finisher.name) html += `<p class="ab-extra">Finisher: ${m.finisher.name}${m.finisher.damage ? ` · ${m.finisher.damage} damage` : ""}</p>`;
+  return html;
+}
+
+/* Patch kit lookup to prefer build numbers */
+const FIGHTER_KITS_MERGED = Object.fromEntries(Object.entries(FIGHTER_KITS).map(([slug, k]) => [slug, mergeKitWithMoves(k)]));
+Object.keys(FIGHTER_KITS_MERGED).forEach((slug) => { FIGHTER_KITS[slug] = FIGHTER_KITS_MERGED[slug]; });
+
+function kitAbilitiesV13(k, el) {
+  const kit = k.fromBuild ? k : mergeKitWithMoves(k);
+  return [
+    ...kit.moves.map((m, i) => ({
+      key: m.key, slot: `Move ${["I", "II", "III", "IV"][i]}`, name: m.name, desc: m.desc || "",
+      cd: m.cooldown, damage: m.damage, range: m.range, duration: m.duration,
+      recast: m.recast, kind: m.kind, icon: m.icon || el, fromBuild: !!kit.fromBuild,
+    })),
+    {
+      key: kit.awakening.key || "G", slot: "Awakening", name: kit.awakening.name, desc: kit.awakening.desc || "",
+      cd: kit.awakening.cooldown, damage: kit.awakening.damage, range: kit.awakening.range,
+      duration: kit.awakening.duration, finisher: kit.awakening.finisher, kind: kit.awakening.kind,
+      icon: kit.awakening.icon || el, fromBuild: !!kit.fromBuild,
+    },
+  ];
+}
+
+/* ---------- Quiz (official 5 questions) ---------- */
+const QUIZ = [
+  { q: "A fight starts. You...", opts: [
+    { t: "Rush in swinging", els: ["flame", "lightning"] },
+    { t: "Read them first, then punish", els: ["ice", "shadow"] },
+    { t: "Keep moving and poke", els: ["wind", "water"] },
+    { t: "Stand your ground", els: ["earth", "metal"] },
+    { t: "Back up your team", els: ["light", "nature"] },
+  ]},
+  { q: "Pick a place in Aurel Bay:", opts: [
+    { t: "The forge district at night", els: ["flame", "metal"] },
+    { t: "The harbor in a storm", els: ["water", "lightning"] },
+    { t: "Rooftops at dawn", els: ["wind", "light"] },
+    { t: "The old academy gardens", els: ["nature", "earth"] },
+    { t: "The frozen canal / back alleys", els: ["ice", "shadow"] },
+  ]},
+  { q: "Your win style:", opts: [
+    { t: "One huge Awakening finish", els: ["flame", "light"] },
+    { t: "Combos nobody can escape", els: ["lightning", "shadow"] },
+    { t: "They never even touched me", els: ["wind", "ice"] },
+    { t: "I outlasted them", els: ["earth", "nature"] },
+    { t: "I controlled the whole arena", els: ["water", "metal"] },
+  ]},
+  { q: "Friends call you...", opts: [
+    { t: "Loud", els: ["flame", "lightning"] },
+    { t: "Calm", els: ["water", "ice"] },
+    { t: "Free", els: ["wind", "nature"] },
+    { t: "Solid", els: ["earth", "metal"] },
+    { t: "Mysterious", els: ["shadow", "light"] },
+  ]},
+  { q: "Pick a weapon vibe:", opts: [
+    { t: "Fists", els: ["flame", "earth"] },
+    { t: "Blade", els: ["metal", "wind"] },
+    { t: "Bow/beam", els: ["light", "lightning"] },
+    { t: "Staff/whip", els: ["water", "nature"] },
+    { t: "Daggers", els: ["shadow", "ice"] },
+  ]},
+];
+
+const QUIZ_FIGHTER = {
+  wind: "tamsin-orel", ice: "nedi-rime", flame: "sirae-holt", lightning: "zaeren-tyne",
+  earth: "raddik-kolg", water: "mirelle-voss", shadow: "pixa-noll", light: "tesen-wynn",
+  metal: "kaedron-ilv", nature: "kald-eschen",
+};
+
+function elementVibe(el) {
+  const lore = (typeof ELEMENT_LORE !== "undefined" && ELEMENT_LORE[el]) || "";
+  const cut = lore.split(/(?<=\.)\s/)[0];
+  return cut || lore;
+}
+
+function initQuiz() {
+  const root = $("#quizApp"); if (!root) return;
+  const progress = $("#quizProgress");
+  const qBox = $("#quizQuestion");
+  const result = $("#quizResult");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let step = 0;
+  const picks = [];
+
+  const scoreEl = () => {
+    const tallies = {};
+    picks.forEach((i, qi) => (QUIZ[qi].opts[i].els || []).forEach((el) => { tallies[el] = (tallies[el] || 0) + 1; }));
+    const max = Math.max(0, ...Object.values(tallies));
+    const tied = Object.keys(tallies).filter((k) => tallies[k] === max);
+    if (tied.length === 1) return tied[0];
+    for (let qi = 0; qi < picks.length; qi++) {
+      const hit = (QUIZ[qi].opts[picks[qi]].els || []).find((el) => tied.includes(el));
+      if (hit) return hit;
+    }
+    return tied[0] || "flame";
+  };
+
+  const showQuestion = () => {
+    result.hidden = true; qBox.hidden = false;
+    const item = QUIZ[step];
+    progress.textContent = `Question ${step + 1} of ${QUIZ.length}`;
+    qBox.innerHTML = `<legend>${item.q}</legend><div class="quiz-opts">${item.opts.map((o, i) =>
+      `<button type="button" class="quiz-opt" data-i="${i}">${o.t}</button>`).join("")}</div>
+      <div class="quiz-nav">${step > 0 ? `<button type="button" class="btn btn-gold" id="quizBack">Back</button>` : ""}</div>`;
+    $$(".quiz-opt", qBox).forEach((b) => b.addEventListener("click", () => {
+      picks[step] = +b.dataset.i; picks.length = step + 1;
+      if (step + 1 < QUIZ.length) { step += 1; showQuestion(); }
+      else showResult(scoreEl(), true);
+    }));
+    const back = $("#quizBack", qBox);
+    if (back) back.addEventListener("click", () => { step = Math.max(0, step - 1); showQuestion(); });
+  };
+
+  const fighterFor = (el) => {
+    const slug = QUIZ_FIGHTER[el];
+    return ROSTER.find((f) => f.slug === slug || kitSlug(f.name) === slug) || ROSTER.find((f) => f.el === el);
+  };
+
+  const showResult = (el, setHash) => {
+    qBox.hidden = true; result.hidden = false;
+    progress.textContent = "Your element";
+    const f = fighterFor(el);
+    const href = asset(`elements/${el}.html`);
+    const share = `${location.origin}${location.pathname}${location.search}#quiz=${el}`;
+    result.innerHTML = `
+      <div class="quiz-result-copy">
+        <figure class="quiz-banner art-frame"><img src="${asset(`assets/elements/${el}-banner.webp`)}" alt="${cap(el)} element banner, concept art" width="1600" height="580"><span class="ph-tag">Concept art</span></figure>
+        <h3>${cap(el)}</h3>
+        <p class="quiz-vibe">${elementVibe(el)}</p>
+        <div class="quiz-actions">
+          <button type="button" class="btn btn-gold" id="quizShare">Copy link</button>
+          <a class="btn btn-gold" href="${href}">Open the ${cap(el)} element page</a>
+          <button type="button" class="btn btn-gold" id="quizRetry">Take it again</button>
+        </div>
+      </div>
+      ${f ? `<div>${fighterCardHTML(f, ROSTER.indexOf(f))}</div>` : ""}`;
+    const shareBtn = $("#quizShare", result);
+    if (shareBtn) shareBtn.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(share); }
+      catch { const ta = Object.assign(document.createElement("textarea"), { value: share }); document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+      shareBtn.textContent = "Copied!";
+      setTimeout(() => { shareBtn.textContent = "Copy link"; }, 1800);
+      toast("Copied a link to this result");
+    });
+    const retry = $("#quizRetry", result);
+    if (retry) retry.addEventListener("click", () => {
+      step = 0; picks.length = 0;
+      history.replaceState(null, "", location.pathname + location.search);
+      showQuestion();
+    });
+    const card = result.querySelector(".rs-card");
+    if (card && $("#fighterModal")) {
+      card.addEventListener("click", () => {
+        /* bindFighterGrid already handles clicks if card is in a bound grid; this result card is outside, so open via hash */
+        location.hash = `fighter=${kitSlug(f.name)}`;
+      });
+    }
+    if (setHash) history.replaceState(null, "", `${location.pathname}${location.search}#quiz=${el}`);
+  };
+
+  const fromHash = () => {
+    const m = location.hash.match(/^#quiz=([a-z]+)$/);
+    if (m && ELEMENTS.includes(m[1])) showResult(m[1], false);
+  };
+  showQuestion();
+  fromHash();
+  addEventListener("hashchange", () => { if (/^#quiz=/.test(location.hash)) fromHash(); });
+}
+
+function initCompare() {
+  const grid = $("#cmpGrid"); if (!grid) return;
+  const aSel = $("#cmpA"), bSel = $("#cmpB");
+  const kits = allCodedKits();
+  const optHtml = kits.map((k) => `<option value="${kitSlug(k.name)}">${k.name}${k.element ? ` · ${k.element}` : ""}</option>`).join("");
+  aSel.innerHTML = optHtml; bSel.innerHTML = optHtml;
+  const defA = kitSlug(kits[0] && kits[0].name);
+  const defB = kitSlug((kits.find((k) => k.name === "Sirae Holt") || kits[1] || kits[0]).name);
+  aSel.value = defA; bSel.value = defB;
+
+  const portrait = (kit) => ROSTER.find((f) => kitSlug(f.name) === kitSlug(kit.name));
+
+  const col = (kit) => {
+    if (!kit) return `<article class="cmp-col"><p>Select a fighter.</p></article>`;
+    const f = portrait(kit);
+    const abil = kitAbilitiesV13(kit, (kit.element || (f && f.el) || "light").toLowerCase());
+    const elLabel = kit.element ? kit.element : (f ? cap(f.el) : "No element listed");
+    const art = f ? `<figure class="cmp-art art-frame"><img src="${f.src}" alt="${f.name} concept art" width="480" height="640"></figure>` : `<p class="cmp-meta">No roster card yet</p>`;
+    return `<article class="cmp-col">${art}<h3>${kit.name}</h3>
+      <p class="cmp-meta">${elLabel}${kit.role ? ` · ${kit.role}` : ""}${kit.resonance ? ` · ${kit.resonance}` : ""}</p>
+      ${abil.map((m) => `<div class="cmp-move"><b>${m.slot} · ${m.name} <span class="cmp-stats">Key ${m.key}</span></b>
+        ${m.desc ? `<p>${m.desc}</p>` : ""}
+        ${moveStatLine(m) ? `<p class="cmp-stats">${moveStatLine(m)}</p>` : ""}${moveExtras(m)}</div>`).join("")}
+    </article>`;
+  };
+
+  const render = () => {
+    const A = kits.find((k) => kitSlug(k.name) === aSel.value);
+    const B = kits.find((k) => kitSlug(k.name) === bSel.value);
+    grid.innerHTML = col(A) + col(B);
+  };
+  aSel.addEventListener("change", render);
+  bSel.addEventListener("change", render);
+  render();
+}
+
+function statusLabel(s) { return s === "building" ? "Building now" : "Planned"; }
+
+function initMap() {
+  const stage = $("#abMapStage"); if (!stage) return;
+  const fallback = $("#abMapFallback");
+  const pins = $("#abMapPins");
+  const panel = $("#abMapPanel");
+  const list = $("#abDistricts");
+  const arenas = $("#abArenas");
+  const data = AUREL_BAY_MAP;
+  stage.hidden = false;
+  if (fallback) fallback.hidden = true;
+
+  const select = (id) => {
+    const z = data.districts.find((d) => d.id === id) || data.districts[0];
+    $$(".ab-pin", pins).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === z.id)));
+    $$("#abDistricts button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === z.id)));
+    panel.innerHTML = `<span class="ab-status">${statusLabel(z.status)}</span>
+      <h3>${z.name}</h3>
+      <p>${z.blurb}</p>
+      <ul>${(z.features || []).map((f) => `<li>${f}</li>`).join("")}</ul>`;
+    panel.hidden = false;
+  };
+
+  pins.innerHTML = data.districts.map((z) =>
+    `<button type="button" class="ab-pin${z.status === "building" ? " is-building" : ""}" style="left:${z.x}%;top:${z.y}%" data-id="${z.id}" aria-label="${z.name}, ${statusLabel(z.status)}" aria-pressed="false"><span class="ab-pin-diamond" aria-hidden="true"></span></button>`
+  ).join("");
+  list.innerHTML = data.districts.map((z) =>
+    `<li><button type="button" data-id="${z.id}" aria-pressed="false">${z.name} · ${statusLabel(z.status)}</button></li>`
+  ).join("");
+  pins.addEventListener("click", (e) => { const b = e.target.closest(".ab-pin"); if (b) select(b.dataset.id); });
+  list.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) select(b.dataset.id); });
+  arenas.innerHTML = (data.arenas || []).map((a) =>
+    `<li><b>${a.name}</b><span class="ab-status">${statusLabel(a.status === "building" ? "building" : "planned")}</span><span>${a.mode}</span><span>${a.size}</span></li>`
+  ).join("");
+  select("academy-plaza");
+}
+
+function renderElementSwatches() {
+  const el = document.body.dataset.element;
+  const box = $("#elSwatches");
+  if (!el || !box || !ELEMENT_COLORS[el]) return;
+  box.innerHTML = `
+    <span class="el-swatch" data-el="${el}" data-tone="main"><i aria-hidden="true"></i> Main</span>
+    <span class="el-swatch" data-el="${el}" data-tone="accent"><i aria-hidden="true"></i> Accent</span>`;
+}
+
+function bindComingSoonDiscord() {
+  const url = CONFIG.DISCORD_URL;
+  const ready = url && url !== "#";
+  $$("[data-discord]").forEach((a) => {
+    if (ready) { a.href = url; a.removeAttribute("aria-disabled"); return; }
+    if (a.closest("#community") || a.classList.contains("hub-soon")) {
+      a.href = "#community";
+      a.setAttribute("aria-disabled", "true");
+      if (!/coming soon/i.test(a.textContent)) a.textContent = "Coming soon";
+      a.addEventListener("click", (e) => e.preventDefault());
+    } else {
+      a.href = "#community";
+    }
+  });
+}
+

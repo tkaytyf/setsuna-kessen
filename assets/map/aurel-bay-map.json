@@ -1,0 +1,31 @@
+{
+  "city": "Aurel Bay",
+  "note": "Layout for the interactive site map. Positions are percentages of the map image (x from left, y from top). Status: 'building' = in progress, 'planned' = coming later. Only Academy Plaza is being built first.",
+  "palette": {"navy": "#141C2D", "slate": "#19191C", "gold": "#C8AA6E", "road": "#2D2D32"},
+  "districts": [
+    {"id": "academy-plaza", "name": "Academy Plaza", "x": 50, "y": 38, "status": "building",
+     "blurb": "The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.",
+     "features": ["Safe spawn at the academy gates", "Mode queue spots", "Tournament stage", "Fountain hangout (no fighting)"]},
+    {"id": "academy-hill", "name": "Academy Hill", "x": 50, "y": 14, "status": "planned",
+     "blurb": "The academy campus on the hill behind the plaza, with training grounds and the courtyard.",
+     "features": ["Training grounds", "Academy courtyard (safe zone)"]},
+    {"id": "harbor", "name": "Gold Harbor", "x": 22, "y": 78, "status": "planned",
+     "blurb": "Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.",
+     "features": ["Container maze", "Pier lookout"]},
+    {"id": "market", "name": "Lantern Market", "x": 78, "y": 62, "status": "planned",
+     "blurb": "Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.",
+     "features": ["Shop stalls", "Rooftop chase routes"]},
+    {"id": "skyline", "name": "Skyline Ward", "x": 80, "y": 24, "status": "planned",
+     "blurb": "Tall towers and rooftop bridges for vertical, dash-heavy fights.",
+     "features": ["Rooftop bridges", "Highest lookout in the city"]},
+    {"id": "old-quarter", "name": "Old Quarter", "x": 20, "y": 34, "status": "planned",
+     "blurb": "Stone streets and a ruined shrine where live-event rifts open.",
+     "features": ["Rift event zone", "Shrine ruins"]}
+  ],
+  "arenas": [
+    {"name": "Training Arena", "size": "120x120 studs", "mode": "Practice vs dummies", "status": "building"},
+    {"name": "Duel Arena", "size": "120x120 studs", "mode": "Ranked Duels 1v1", "status": "planned"},
+    {"name": "Squad Arena", "size": "about 200x200 studs", "mode": "3v3", "status": "planned"},
+    {"name": "Legion Arena", "size": "about 260x260 studs", "mode": "Legion War 5v5", "status": "planned"}
+  ]
+}
