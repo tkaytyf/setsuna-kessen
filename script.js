@@ -970,7 +970,13 @@ function toast(html) { const t = $("#toast"); t.innerHTML = `<span class="ph-dot
 function modal(id) {
   const m = $(id);
   const open = () => { m.classList.add("open"); m.setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden"; $(".modal-close", m).focus(); };
-  const close = () => { m.classList.remove("open"); m.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; };
+  const close = () => {
+    m.classList.remove("open");
+    m.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    const vid = m.querySelector("video");
+    if (vid) { vid.pause(); }
+  };
   $$("[data-close]", m).forEach((el) => el.addEventListener("click", close));
   addEventListener("keydown", (e) => e.key === "Escape" && close());
   return open;
@@ -1021,15 +1027,44 @@ function initMore() {
   }));
 }
 function initReveal() {
-  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
-  $$(".reveal").forEach((el) => io.observe(el));
-  $$(".masthead .reveal").forEach((el, i) => el.style.setProperty("--d", `${0.1 + i * 0.12}s`));
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const items = $$(".reveal");
+  if (reduce) { items.forEach((el) => el.classList.add("in")); return; }
+  $$("section").forEach((sec) => {
+    $$(".reveal", sec).forEach((el, i) => {
+      if (!el.style.getPropertyValue("--d")) el.style.setProperty("--d", `${Math.min(i * 0.07, 0.42)}s`);
+    });
+  });
+  $$(".masthead .reveal").forEach((el, i) => el.style.setProperty("--d", `${0.12 + i * 0.12}s`));
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("in");
+    io.unobserve(e.target);
+  }), { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  items.forEach((el) => io.observe(el));
 }
 function initParallax() {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const els = $$("[data-parallax]"); let tick = false;
-  const upd = () => { els.forEach((el) => { const r = el.closest("section").getBoundingClientRect(); const base = el.classList.contains("mh-figure-l") ? "scaleX(-1) " : el.classList.contains("mh-kanji") ? "translate(-50%,-50%) " : ""; el.style.transform = `${base}translate3d(0, ${-r.top * parseFloat(el.dataset.parallax)}px, 0)`; }); tick = false; };
-  addEventListener("scroll", () => { if (!tick) { requestAnimationFrame(upd); tick = true; } }, { passive: true }); upd();
+  const els = $$("[data-parallax]");
+  if (!els.length) return;
+  const mobile = matchMedia("(max-width: 700px)").matches;
+  let tick = false;
+  const upd = () => {
+    els.forEach((el) => {
+      const sec = el.closest("section") || el;
+      const r = sec.getBoundingClientRect();
+      const factor = parseFloat(el.dataset.parallax) * (mobile ? 0.4 : 1);
+      const y = -r.top * factor;
+      let base = "";
+      if (el.classList.contains("mh-figure-l")) base = "scaleX(-1) ";
+      else if (el.classList.contains("mh-kanji")) base = "translate(-50%,-50%) ";
+      else if (el.classList.contains("mh-video-stage")) base = "translate(-50%,-54%) ";
+      el.style.transform = `${base}translate3d(0, ${y.toFixed(1)}px, 0)`;
+    });
+    tick = false;
+  };
+  addEventListener("scroll", () => { if (!tick) { requestAnimationFrame(upd); tick = true; } }, { passive: true });
+  upd();
 }
 function initParticles() {
   const host = $("#mhParticles"); if (!host) return;
@@ -1037,9 +1072,9 @@ function initParticles() {
   for (let i = 0; i < n; i++) { const p = document.createElement("i"); p.style.left = `${Math.random() * 100}%`; p.style.animationDuration = `${7 + Math.random() * 9}s`; p.style.animationDelay = `${-Math.random() * 16}s`; host.appendChild(p); }
 }
 
-function initPromoVideo() {
-  const v = $("#promoVideo"); if (!v) return;
-  const stage = $("#promoStage") || v.closest(".diamond-stage");
+function initCinematicVideo(sel, stageSel) {
+  const v = $(sel); if (!v) return;
+  const stage = (stageSel && $(stageSel)) || v.closest("[data-video-stage]") || v.parentElement;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduce) {
     v.pause();
@@ -1054,6 +1089,10 @@ function initPromoVideo() {
   const play = () => { v.classList.add("is-on"); v.play().catch(() => {}); };
   if (v.readyState >= 2) play();
   else v.addEventListener("canplay", play, { once: true });
+}
+function initPromoVideo() {
+  initCinematicVideo("#promoVideo", "#promoStage");
+  initCinematicVideo("#heroVideo", "#heroVideoStage");
 }
 function initCounters() {
   const io = new IntersectionObserver((es) => es.forEach((e) => {

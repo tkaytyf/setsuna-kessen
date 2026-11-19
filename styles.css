@@ -1425,3 +1425,298 @@ body.element-page .footer { padding-bottom: 48px; }
     border-color: var(--gold-1);
   }
 }
+
+/* ---------- v12: aesthetic polish ---------- */
+:root { --art-grade: saturate(.9) contrast(1.05) brightness(.97) sepia(.06); }
+
+/* grain tile, very subtle */
+.blade::before,
+.centered-promo::before,
+.element-page main::before,
+.masthead::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("assets/polish/grain.png") repeat;
+  opacity: .45;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+}
+.masthead::after { opacity: .28; z-index: 4; }
+.blade::before, .centered-promo::before, .element-page main::before { z-index: 0; }
+
+/* breathing room + type ramp (Outfit / Yuji Boku only — no Cormorant) */
+.blade, .news, .wallpapers, .roster, .rewards-blade, .modes, .centered-promo {
+  padding-top: 128px;
+  padding-bottom: 128px;
+}
+.kicker, .kicker-italic {
+  font-family: var(--f-body) !important;
+  font-weight: 500 !important;
+  font-size: clamp(13px, 1.1vw, 15px) !important;
+  letter-spacing: .18em !important;
+  line-height: 1.2 !important;
+}
+.h-blade {
+  font-family: var(--f-display) !important;
+  font-weight: 400 !important;
+  font-size: clamp(48px, 5.8vw, 84px) !important;
+  line-height: .98 !important;
+  letter-spacing: .01em !important;
+  max-width: 18ch;
+}
+.h-section {
+  font-family: var(--f-display) !important;
+  font-weight: 400 !important;
+  font-size: clamp(34px, 3.4vw, 52px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .02em !important;
+}
+.blade-copy, .v9-text .blade-copy, .rewards-blade .promo-text .blade-copy, .el-lore {
+  max-width: 38rem;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--cream);
+}
+.news .blade-copy, .wallpapers .blade-copy { margin-inline: auto; text-align: center; }
+
+/* heading underline ornament */
+.h-blade::after,
+.h-section::after,
+.element-page .el-heading h1::after {
+  content: "";
+  display: block;
+  width: 240px;
+  height: 16px;
+  margin: 16px 0 0;
+  background: url("assets/polish/heading-underline.svg") center / contain no-repeat;
+}
+.news .h-section::after,
+.wallpapers .h-blade::after,
+.roadmap .h-blade::after,
+.howto .h-blade::after,
+.modes .h-blade::after,
+.arenas .h-blade::after,
+.centered-promo .h-blade::after,
+.roster .h-blade::after {
+  margin-inline: auto;
+}
+.element-page .el-heading h1::after { margin-top: 12px; }
+
+/* gold section dividers */
+.sec-divider {
+  height: 48px;
+  margin: -8px auto;
+  background: url("assets/polish/divider.svg") center / min(800px, 88vw) auto no-repeat;
+  pointer-events: none;
+  position: relative;
+  z-index: 3;
+}
+
+/* gold corner accents + thin gold frame + navy vignette */
+.gold-corners { position: relative; }
+.gold-corners::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background:
+    url("assets/polish/corner-tl.png") top left / 52px 52px no-repeat,
+    url("assets/polish/corner-tr.png") top right / 52px 52px no-repeat,
+    url("assets/polish/corner-bl.png") bottom left / 52px 52px no-repeat,
+    url("assets/polish/corner-br.png") bottom right / 52px 52px no-repeat;
+}
+.art-frame,
+.news-img,
+.v9-media,
+.rewards-art,
+.wp-art,
+.cp-banner,
+.el-banner,
+#modeStage,
+.arena-slot {
+  border: 1px solid rgba(200,170,110,.42) !important;
+  position: relative;
+  overflow: hidden;
+}
+.art-frame::after,
+.news-img::after,
+.v9-media::after,
+.rewards-art::after,
+.wp-art::after,
+.cp-banner::after,
+.el-banner::after,
+#modeStage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  box-shadow: inset 0 0 72px 16px rgba(1,10,19,.42);
+  background: linear-gradient(180deg, rgba(1,10,19,.18) 0%, transparent 28%, transparent 70%, rgba(1,10,19,.28) 100%);
+}
+
+/* one consistent color grade on concept art (not logos/icons/ui) */
+.news-img img,
+.v9-media img,
+.rewards-art img,
+.wp-art img,
+.cp-banner img,
+.el-banner img,
+#modeArt img,
+.mh-sky,
+.ht-city,
+.rs-card img,
+.fm-art img {
+  filter: var(--art-grade);
+}
+
+/* kill leftover orange / glow */
+.btn-primary:hover,
+.pill-cta:hover {
+  background: var(--gold-1) !important;
+  color: var(--navy) !important;
+  box-shadow: none !important;
+}
+.mh-trailer:hover .mh-trailer-ico { box-shadow: none !important; }
+.ph-dot { box-shadow: none !important; }
+
+/* hero Tovin loop — framed portrait between the two fighters, behind the title */
+.mh-video-stage {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  width: min(22vw, 250px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -54%);
+  z-index: 2;
+  pointer-events: none;
+}
+.mh-video-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(200,170,110,.5);
+  background: #010A13;
+  clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0 92%, 0 8%);
+}
+.mh-video-frame video,
+.mh-video-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  filter: var(--art-grade);
+}
+.mh-video-frame video { opacity: 0; }
+.mh-video-frame video.is-on { opacity: 1; }
+.mh-video-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse at 50% 42%, rgba(1,10,19,0) 34%, rgba(1,10,19,.78) 100%);
+  pointer-events: none;
+}
+.mh-video-stage.reduced-motion video { display: none !important; }
+.mh-video-stage.reduced-motion img { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .mh-video-frame video { display: none !important; }
+  .mh-video-frame img { opacity: 1; }
+}
+.mh-content { z-index: 6; }
+.mh-shade { z-index: 5; }
+
+/* story leads with art on small screens; keep a taller portrait crop */
+.v9-media img { aspect-ratio: 3 / 4; max-height: 680px; object-position: center 20%; }
+@media (max-width: 960px) {
+  .v9-split { display: flex; flex-direction: column; }
+  .v9-media { order: -1; }
+  .v9-media img { aspect-ratio: 3 / 4; max-height: 520px; }
+}
+
+/* 10 wallpapers: even rows on desktop (5) and mobile (2) */
+.wp-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 22px; }
+@media (max-width: 1100px) {
+  .wp-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 16px; }
+}
+@media (max-width: 800px) {
+  .wp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 14px; }
+}
+
+/* smoother reveals */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* concept trailer */
+.trailer-slot { padding: 8px 8px 16px; }
+.trailer-label {
+  margin: 0 0 12px;
+  font: 700 11px/1 var(--f-body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold-1);
+  text-align: center;
+}
+.trailer-slot video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #010A13;
+  border: 1px solid rgba(200,170,110,.4);
+}
+
+/* tighter element-page type + underline already hooked */
+.element-page .el-heading h1 {
+  font-family: var(--f-display);
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+.element-page .el-lore { max-width: 40rem; }
+
+@media (max-width: 600px) {
+  .blade, .news, .wallpapers, .roster, .rewards-blade, .modes, .centered-promo {
+    padding-top: 84px;
+    padding-bottom: 84px;
+  }
+  .h-blade { font-size: clamp(36px, 11vw, 48px) !important; }
+  .h-section { font-size: clamp(28px, 8vw, 36px) !important; }
+  .mh-video-stage {
+    width: min(52vw, 220px);
+    top: 24%;
+    opacity: .88;
+  }
+  .gold-corners::before { background-size: 36px 36px; }
+  .sec-divider { height: 36px; margin: 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-video-stage { transform: translate(-50%, -54%) !important; }
+}
+
+/* v12 mobile rewards fade must override the shared vignette ::after */
+@media (max-width: 960px) {
+  .rewards-art::after {
+    inset: auto 0 0;
+    height: 48%;
+    box-shadow: none;
+    background: linear-gradient(to bottom, rgba(1,10,19,0) 0%, var(--navy) 90%);
+    z-index: 3;
+  }
+}
+
+/* v12 topbar solid */
+.topbar {
+  background: rgba(1,10,19,.96) !important;
+  backdrop-filter: blur(10px);
+}

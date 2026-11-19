@@ -28,7 +28,7 @@
   <meta name="twitter:title" content="Setsuna Kessen (刹那決戦) — Anime Fighting on Roblox" />
   <meta name="twitter:description" content="An anime fighting game on Roblox. 100 fighters, ten elements, and every fight is decided in an instant." />
   <meta name="twitter:image" content="https://tkaytyf.github.io/setsuna-kessen/assets/og.jpg" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -36,8 +36,8 @@
   <!-- Site-wide placeholder notice -->
   <div class="ph-banner" role="note">
     <span class="ph-dot"></span>
-    <span class="ph-long">Preview build — arena screenshots, trailer, patch notes and stats are still <strong>placeholders</strong>.</span>
-    <span class="ph-short">Preview — trailer, patch notes &amp; stats are <strong>placeholders</strong>.</span>
+    <span class="ph-long">Preview build — arena screenshots, patch notes and stats are still <strong>placeholders</strong>.</span>
+    <span class="ph-short">Preview — patch notes &amp; stats are <strong>placeholders</strong>.</span>
     <button class="ph-banner-close" aria-label="Dismiss notice">×</button>
   </div>
 
@@ -93,6 +93,15 @@
     <section class="masthead" id="hero">
       <div class="mh-bg" aria-hidden="true">
         <div class="mh-sky" data-parallax="0.32"></div>
+        <div class="mh-video-stage" id="heroVideoStage" data-parallax="0.05">
+          <div class="mh-video-frame gold-corners">
+            <img class="mh-video-poster" src="assets/animated/tovin-hero-poster.webp" alt="" width="720" height="720">
+            <video id="heroVideo" muted loop playsinline preload="metadata" poster="assets/animated/tovin-hero-poster.webp" aria-label="Tovin Rusk concept art, animated">
+              <source src="assets/animated/tovin-hero-loop.webm" type="video/webm">
+              <source src="assets/animated/tovin-hero-loop.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
         <!-- v7 layered hero: fighters cut out of the concept art, slide in on load, parallax faster than the plate -->
         <div class="mh-layer mh-layer-l" data-parallax="0.08"><div class="mh-cut"></div></div>
         <div class="mh-layer mh-layer-r" data-parallax="0.12"><div class="mh-cut"></div></div>
@@ -114,12 +123,14 @@
         <a href="#" class="btn btn-primary btn-ornate reveal" data-roblox><span>Play on Roblox</span></a>
         <button class="mh-trailer reveal" data-open-trailer>
           <span class="mh-trailer-ico"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
-          Watch the trailer <em>Placeholder</em>
+          Watch the trailer
         </button>
       </div>
     </section>
 
     <!-- ============ 2. FEATURED NEWS (patch notes as news cards) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade light news" id="news">
       <div class="wrap">
         <div class="blade-head">
@@ -136,6 +147,8 @@
     </section>
 
     <!-- ============ STORY (v9) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade v9 story" id="story">
       <div class="wrap split v9-split">
         <div class="v9-text">
@@ -150,8 +163,8 @@
           </div>
           <button class="more-btn reveal" type="button" aria-expanded="false" aria-controls="storyMore" data-more>Read more</button>
         </div>
-        <figure class="v9-media reveal">
-          <img src="assets/story.webp" alt="A fighter in a long coat channels red fire in the ruins of a city" width="610" height="860" loading="lazy" decoding="async">
+        <figure class="v9-media gold-corners art-frame reveal" data-parallax="0.04">
+          <img src="assets/story.webp?v=12" alt="A Warden in a navy-and-gold academy coat stands at dusk over Aurel Bay, concept art" width="720" height="960" loading="lazy" decoding="async">
           <span class="ph-tag">Concept art</span>
         </figure>
       </div>
@@ -167,6 +180,8 @@
     </section>
 
     <!-- ============ 3. CHOOSE YOUR FIGHTER (v8: 100-fighter roster grid) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade roster" id="fighters">
       <div class="watermark" lang="ja" aria-hidden="true">決</div>
       <div class="wrap">
@@ -195,6 +210,8 @@
     </section>
 
     <!-- ============ HOW TO PLAY (v9) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade v9 howto" id="howtoplay">
       <div class="wrap">
         <header class="v9-head">
@@ -220,6 +237,8 @@
     </section>
 
     <!-- ============ 5. MULTIPLE WAYS TO FIGHT (game modes) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade dark modes" id="modes">
       <div class="wrap split">
         <div class="split-text">
@@ -250,6 +269,8 @@
     </section>
 
     <!-- ============ ARENAS (v9, placeholder slots for training-arena shots) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade v9 arenas" id="arenas">
       <div class="wrap">
         <header class="v9-head">
@@ -265,10 +286,12 @@
     </section>
 
     <!-- ============ 4. CODES & REWARDS ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade dark promo rewards-blade" id="codes">
       <div class="promo-bg" aria-hidden="true" data-parallax="0.12"></div>
       <div class="wrap rewards-layout">
-        <figure class="rewards-art reveal" id="rewardsArt">
+        <figure class="rewards-art gold-corners art-frame reveal" id="rewardsArt" data-parallax="0.04">
           <div class="art-fallback" aria-hidden="true">Art coming soon</div>
           <img src="assets/rewards-hero.webp" alt="Original concept art: a fighter in navy and gold, with gems, coins, a scarf and a title banner" width="1280" height="720" decoding="async">
           <span class="ph-tag" id="rewardsArtTag" data-ok="Concept art" data-miss="Art coming soon">Concept art</span>
@@ -286,16 +309,18 @@
 
 
         <!-- ============ WALLPAPERS ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade dark wallpapers" id="wallpapers">
       <div class="wrap">
         <header class="v9-head">
           <p class="kicker reveal">Take them with you</p>
           <h2 class="h-blade reveal">Wallpapers</h2>
-          <p class="blade-copy reveal">Nine phone wallpapers from the concept-art roster. Tap download to save one to your device.</p>
+          <p class="blade-copy reveal">Ten phone wallpapers from the concept-art roster. Tap download to save one to your device.</p>
         </header>
         <div class="wp-grid">
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/00-tovin-rusk.webp" alt="Tovin Rusk phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -306,7 +331,19 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
+              <img src="assets/wallpapers/thumbs/01-kaelith-rue.webp" alt="Kaelith Rue phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
+              <span class="ph-tag">Concept art</span>
+            </div>
+            <div class="wp-meta">
+              <b>Kaelith Rue</b>
+              <span>Wind</span>
+              <a class="btn btn-gold wp-dl" href="assets/wallpapers/01-kaelith-rue-wallpaper.jpg" download="setsuna-kessen-01-kaelith-rue-wallpaper.jpg">Download</a>
+            </div>
+          </article>
+
+          <article class="wp-card reveal">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/02-tamsin-orel.webp" alt="Tamsin Orel phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -317,7 +354,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/10-sael-orin.webp" alt="Sael Orin phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -328,7 +365,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/14-nedi-rime.webp" alt="Nedi Rime phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -339,7 +376,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/22-sirae-holt.webp" alt="Sirae Holt phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -350,7 +387,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/26-jastel-vohl.webp" alt="Jastel Vohl phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -361,7 +398,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/69-pixa-noll.webp" alt="Pixa Noll phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -372,7 +409,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/79-tesen-wynn.webp" alt="Tesen Wynn phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -383,7 +420,7 @@
             </div>
           </article>
           <article class="wp-card reveal">
-            <div class="wp-art">
+            <div class="wp-art gold-corners art-frame">
               <img src="assets/wallpapers/thumbs/93-kald-eschen.webp" alt="Kald Eschen phone wallpaper" width="360" height="640" loading="lazy" decoding="async">
               <span class="ph-tag">Concept art</span>
             </div>
@@ -397,6 +434,8 @@
       </div>
     </section>
     <!-- ============ ROADMAP (v9, no dates) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="blade v9 roadmap" id="roadmap">
       <div class="wrap">
         <header class="v9-head">
@@ -415,11 +454,13 @@
     </section>
 
     <!-- ============ 6. CENTERED PROMOTION (Discord community) ============ -->
+    
+    <div class="sec-divider" aria-hidden="true"></div>
     <section class="centered-promo" id="community">
       <div class="cp-content">
         <p class="kicker kicker-italic reveal">Join</p>
         <h2 class="sr-only"><span data-game-name>Setsuna Kessen</span></h2>
-        <figure class="cp-banner reveal"><img src="assets/news/site-live.webp" alt="Setsuna Kessen key art: two fighters face off at dusk over a navy-and-gold academy city" width="1280" height="720" loading="lazy" decoding="async"><span class="ph-tag">Concept art</span></figure>
+        <figure class="cp-banner gold-corners art-frame reveal"><img src="assets/news/site-live.webp" alt="Setsuna Kessen key art: two fighters face off at dusk over a navy-and-gold academy city" width="1280" height="720" loading="lazy" decoding="async"><span class="ph-tag">Concept art</span></figure>
         <p class="blade-copy reveal">Find teammates, catch update drops first, enter tournaments and get exclusive codes in the official Discord.</p>
         <div class="cp-stats reveal">
           <div><strong data-count="12400">12.4K</strong><span>Members</span></div>
@@ -465,7 +506,7 @@
           <li>Concept-art fighter roster; placeholder abilities</li>
           <li>Launch codes listed — redeemable at launch</li>
           <li>Placeholder patch notes &amp; stats</li>
-          <li>Placeholder arena screenshots &amp; trailer</li>
+          <li>Placeholder arena screenshots</li>
         </ul>
       </div>
     </div>
@@ -487,15 +528,12 @@
     <div class="modal-backdrop" data-close></div>
     <div class="modal-body">
       <button class="modal-close" data-close aria-label="Close">×</button>
-      <div class="modal-video">
-        <!-- TODO: replace this placeholder with an embedded trailer (e.g. YouTube iframe) -->
-        <div class="modal-ph">
-          <span class="ph-tag">Placeholder trailer</span>
-          <span class="ll-kanji" lang="ja">刹那決戦</span>
-          <div class="modal-ph-title" data-game-name>Setsuna Kessen</div>
-          <p>Official trailer coming soon.</p>
-          <div class="modal-ph-bar"><i></i></div>
-        </div>
+      <div class="modal-video trailer-slot">
+        <p class="trailer-label">Concept trailer — cinematic, not gameplay</p>
+        <video id="conceptTrailer" controls muted playsinline preload="metadata" poster="assets/trailer/poster.webp">
+          <source src="assets/trailer/setsuna-concept-trailer.webm" type="video/webm">
+          <source src="assets/trailer/setsuna-concept-trailer.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </div>
@@ -551,6 +589,6 @@
     </defs>
   </svg>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>
