@@ -1,49 +1,138 @@
 {
   "city": "Aurel Bay",
   "note": "Layout for the interactive site map. Positions are percentages of the map image (x from left, y from top). Status: 'building' = in progress, 'planned' = coming later. Only Academy Plaza is being built first. The Duel Arena in Academy Plaza is the arena being built; the Training Arena is planned on Academy Hill.",
-  "palette": {"navy": "#141C2D", "slate": "#19191C", "gold": "#C8AA6E", "road": "#2D2D32"},
+  "palette": {
+    "navy": "#141C2D",
+    "slate": "#19191C",
+    "gold": "#C8AA6E",
+    "road": "#2D2D32"
+  },
   "districts": [
-    {"id": "academy-plaza", "name": "Academy Plaza", "x": 50, "y": 38, "status": "building",
-     "blurb": "The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.",
-     "features": ["Safe spawn at the academy gates", "Mode queue spots", "Tournament stage", "Fountain hangout (no fighting)"],
-     "mood": "dusk (ClockTime 18), slate stone, navy banners, matte gold trim",
-     "lore": "The old plaza clock tower is stuck on 4:07. Studio build: matte stone tower, cream clock face with dark hands set to 4:07, no lights. A newer street clock nearby runs 7 seconds behind (planned).",
-     "arena": "Duel Arena (1v1 Ranked, 120x120 studs) beside the tournament stage"},
-    {"id": "academy-hill", "name": "Academy Hill", "x": 50, "y": 14, "status": "planned",
-     "blurb": "The academy campus on the hill behind the plaza, with training grounds and the courtyard.",
-     "features": ["Training grounds", "Academy courtyard (safe zone)"],
-     "mood": "clear morning, clean stone, gold-trimmed academy walls",
-     "lore": null,
-     "arena": "Training Arena (practice vs dummies, 120x120 studs), the first one being built"},
-    {"id": "harbor", "name": "Gold Harbor", "x": 22, "y": 78, "status": "planned",
-     "blurb": "Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.",
-     "features": ["Container maze", "Pier lookout"],
-     "mood": "dawn fog (higher Atmosphere density), wet docks, rust and navy containers",
-     "lore": null,
-     "arena": "Squad Arena (3v3, about 200x200 studs) in the container yard, with cover lanes for team fights"},
-    {"id": "market", "name": "Lantern Market", "x": 78, "y": 62, "status": "planned",
-     "blurb": "Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.",
-     "features": ["Shop stalls", "Rooftop chase routes"],
-     "mood": "night, warm matte lantern glow (low LightEmission), narrow streets",
-     "lore": null,
-     "arena": null},
-    {"id": "skyline", "name": "Skyline Ward", "x": 80, "y": 24, "status": "planned",
-     "blurb": "Tall towers and rooftop bridges for vertical, dash-heavy fights.",
-     "features": ["Rooftop bridges", "Highest lookout in the city"],
-     "mood": "noon, open sky, wind across the rooftops",
-     "lore": null,
-     "arena": "Legion Arena (Legion War 5v5, about 260x260 studs) across linked rooftops, built for vertical dash fights"},
-    {"id": "old-quarter", "name": "Old Quarter", "x": 20, "y": 34, "status": "planned",
-     "blurb": "Stone streets and a ruined shrine where live-event rifts open.",
-     "features": ["Rift event zone", "Shrine ruins"],
-     "mood": "overcast and rainy, mossy stone, rifts in matte violet-black",
-     "lore": "This is where the seven seconds never fully ended. The rifts are time stutters.",
-     "arena": null}
+    {
+      "id": "academy-plaza",
+      "name": "Academy Plaza",
+      "x": 50,
+      "y": 38,
+      "status": "building",
+      "blurb": "The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.",
+      "features": [
+        "Safe spawn at the academy gates",
+        "Mode queue spots",
+        "Tournament stage",
+        "Fountain hangout (no fighting)"
+      ],
+      "mood": "dusk (ClockTime 18), slate stone, navy banners, matte gold trim",
+      "lore": "The old plaza clock tower is stuck on 4:07. Studio build: matte stone tower, cream clock face with dark hands set to 4:07, no lights. A newer street clock nearby runs 7 seconds behind (planned).",
+      "arena": "Duel Arena (1v1 Ranked, 120x120 studs) beside the tournament stage"
+    },
+    {
+      "id": "academy-hill",
+      "name": "Academy Hill",
+      "x": 50,
+      "y": 14,
+      "status": "planned",
+      "blurb": "The academy campus on the hill behind the plaza, with training grounds and the courtyard.",
+      "features": [
+        "Training grounds",
+        "Academy courtyard (safe zone)"
+      ],
+      "mood": "clear morning, clean stone, gold-trimmed academy walls",
+      "lore": "Vesperreach Academy was founded here after the freeze to train the people who woke with a Resonance. First-years learn to stand their ground by the fountain below the gates.",
+      "arena": "Training Arena (practice vs dummies, 120x120 studs), planned"
+    },
+    {
+      "id": "harbor",
+      "name": "Gold Harbor",
+      "x": 22,
+      "y": 78,
+      "status": "planned",
+      "blurb": "Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.",
+      "features": [
+        "Container maze",
+        "Pier lookout"
+      ],
+      "mood": "dawn fog (higher Atmosphere density), wet docks, rust and navy containers",
+      "lore": "The harbor master's clock still reads 4:07. Dockworkers swear the tide came in seven seconds late that day and has kept that pace ever since.",
+      "arena": "Squad Arena (3v3, about 200x200 studs) in the container yard, with cover lanes for team fights"
+    },
+    {
+      "id": "market",
+      "name": "Lantern Market",
+      "x": 78,
+      "y": 62,
+      "status": "planned",
+      "blurb": "Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.",
+      "features": [
+        "Shop stalls",
+        "Rooftop chase routes"
+      ],
+      "mood": "night, warm matte lantern glow (low LightEmission), narrow streets",
+      "lore": "Every old lantern clock in the market stopped at 4:07. Vendors leave them hanging as charms, and the newest stalls set their clocks seven seconds behind on purpose.",
+      "arena": "No arena. It's a safe zone for shops and cosmetics vendors."
+    },
+    {
+      "id": "skyline",
+      "name": "Skyline Ward",
+      "x": 80,
+      "y": 24,
+      "status": "planned",
+      "blurb": "Tall towers and rooftop bridges for vertical, dash-heavy fights.",
+      "features": [
+        "Rooftop bridges",
+        "Highest lookout in the city"
+      ],
+      "mood": "noon, open sky, wind across the rooftops",
+      "lore": "The towers went up after the freeze, built tall so the academy could watch the whole bay. From the highest bridge you can see every stopped clock in the city at once.",
+      "arena": "Legion Arena (Legion War 5v5, about 260x260 studs) across linked rooftops, built for vertical dash fights"
+    },
+    {
+      "id": "old-quarter",
+      "name": "Old Quarter",
+      "x": 20,
+      "y": 34,
+      "status": "planned",
+      "blurb": "Stone streets and a ruined shrine where live-event rifts open.",
+      "features": [
+        "Rift event zone",
+        "Shrine ruins"
+      ],
+      "mood": "overcast and rainy, mossy stone, rifts in matte violet-black",
+      "lore": "This is where the seven seconds never fully ended. The rifts are time stutters.",
+      "arena": "No fixed arena. Live-event rift fights open here."
+    }
   ],
   "arenas": [
-    {"name": "Training Arena", "size": "120x120 studs", "mode": "Practice vs dummies", "status": "planned", "district": "academy-hill", "districtName": "Academy Hill"},
-    {"name": "Duel Arena", "size": "120x120 studs", "mode": "Ranked Duels 1v1", "status": "building", "district": "academy-plaza", "districtName": "Academy Plaza"},
-    {"name": "Squad Arena", "size": "about 200x200 studs", "mode": "3v3", "status": "planned", "district": "harbor", "districtName": "Gold Harbor"},
-    {"name": "Legion Arena", "size": "about 260x260 studs", "mode": "Legion War 5v5", "status": "planned", "district": "skyline", "districtName": "Skyline Ward"}
+    {
+      "name": "Training Arena",
+      "size": "120x120 studs",
+      "mode": "Practice vs dummies",
+      "status": "planned",
+      "district": "academy-hill",
+      "districtName": "Academy Hill"
+    },
+    {
+      "name": "Duel Arena",
+      "size": "120x120 studs",
+      "mode": "Ranked Duels 1v1",
+      "status": "building",
+      "district": "academy-plaza",
+      "districtName": "Academy Plaza"
+    },
+    {
+      "name": "Squad Arena",
+      "size": "about 200x200 studs",
+      "mode": "3v3",
+      "status": "planned",
+      "district": "harbor",
+      "districtName": "Gold Harbor"
+    },
+    {
+      "name": "Legion Arena",
+      "size": "about 260x260 studs",
+      "mode": "Legion War 5v5",
+      "status": "planned",
+      "district": "skyline",
+      "districtName": "Skyline Ward"
+    }
   ]
 }
