@@ -4985,6 +4985,7 @@ function initMap() {
 function playerFacingMatchupRule(rule) {
   let s = String(rule || "");
   s = s.replace(/\s*Starting balance for Luau Scripter, not locked\.\s*/gi, " ");
+  s = s.replace(/Light and Shadow are mutual counters:[^.]*\./i, "Light and Shadow counter each other: each deals +5% to the other.");
   s = s.replace(/\bweakTo\b/g, "Weak to");
   return tidyPlayerCopy(s);
 }

@@ -2631,3 +2631,17 @@ a.btn.wp-dl, .wp-dl { min-height: 44px !important; }
 }
 
 @media (max-width: 600px) { .feature-grid li > :not(.fi) { grid-column: 2; min-width: 0; } .feature-grid .fi { grid-column: 1; grid-row: 1 / span 2; } }
+
+/* ===== v18: solid menu footer, promo bar static on desktop ===== */
+@media (max-width: 960px) {
+  body.menu-open .mainnav.open::after {
+    content: ""; position: fixed; left: 0; right: 0; bottom: 0;
+    height: calc(136px + env(safe-area-inset-bottom, 0px));
+    background: #010A13; border-top: 1px solid rgba(244,244,246,.12);
+    z-index: 2; pointer-events: none;
+  }
+  .mainnav.open .nav-discord, .mainnav.open .nav-play { position: fixed !important; z-index: 3 !important; }
+  .mainnav { padding-bottom: calc(168px + env(safe-area-inset-bottom, 0px)) !important; }
+}
+.promo-bar { position: static !important; transform: none !important; }
+.promo-bar.hide { display: none; }
