@@ -1,0 +1,27 @@
+{
+  "rule": "Soft counter: +5% damage dealt to a fighter whose element you beat. No effect on cooldowns, health, or meter. Starting balance for Luau Scripter, not locked.",
+  "matchups": {
+    "Flame":     {"beats": ["Nature", "Ice"],       "weakTo": ["Water", "Earth"]},
+    "Water":     {"beats": ["Flame", "Earth"],      "weakTo": ["Ice", "Lightning"]},
+    "Ice":       {"beats": ["Water", "Wind"],       "weakTo": ["Flame", "Metal"]},
+    "Lightning": {"beats": ["Water", "Metal"],      "weakTo": ["Earth", "Nature"]},
+    "Wind":      {"beats": ["Nature", "Shadow"],    "weakTo": ["Ice", "Light"]},
+    "Earth":     {"beats": ["Lightning", "Flame"],  "weakTo": ["Water", "Nature"]},
+    "Metal":     {"beats": ["Ice", "Light"],        "weakTo": ["Lightning", "Shadow"]},
+    "Nature":    {"beats": ["Earth", "Lightning"],  "weakTo": ["Flame", "Wind"]},
+    "Light":     {"beats": ["Shadow", "Wind"],      "weakTo": ["Metal", "Shadow"]},
+    "Shadow":    {"beats": ["Light", "Metal"],      "weakTo": ["Wind", "Light"]}
+  },
+  "why": {
+    "Flame>Nature": "burns through vines", "Flame>Ice": "melts it",
+    "Water>Flame": "douses it", "Water>Earth": "erodes stone",
+    "Ice>Water": "freezes it solid", "Ice>Wind": "frost stills the air",
+    "Lightning>Water": "conducts through it", "Lightning>Metal": "arcs through armor",
+    "Wind>Nature": "scatters seeds and leaves", "Wind>Shadow": "clears smoke cover",
+    "Earth>Lightning": "grounds the charge", "Earth>Flame": "smothers it",
+    "Metal>Ice": "shatters it", "Metal>Light": "polished plate reflects it",
+    "Nature>Earth": "roots crack stone", "Nature>Lightning": "wood does not conduct",
+    "Light>Shadow": "lights up hiding spots", "Light>Wind": "glare reads fast feints",
+    "Shadow>Light": "swallows it", "Shadow>Metal": "slips through armor gaps"
+  }
+}

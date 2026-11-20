@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metal — Setsuna Kessen</title>
-  <meta name="description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten concept-art fighters, and a Resonance decided in an instant." />
+  <meta name="description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten fighters, and a Resonance decided in an instant." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Yuji+Boku&display=swap" rel="stylesheet" />
@@ -14,11 +14,12 @@
   <link rel="icon" href="../assets/brand/icon-192.png" type="image/png" sizes="192x192" />
   <link rel="icon" href="../assets/brand/icon-512.png" type="image/png" sizes="512x512" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="canonical" href="https://tkaytyf.github.io/setsuna-kessen/elements/metal.html" />
   <meta name="theme-color" content="#010A13" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Setsuna Kessen" />
   <meta property="og:title" content="Metal — Setsuna Kessen" />
-  <meta property="og:description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten concept-art fighters, and a Resonance decided in an instant." />
+  <meta property="og:description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten fighters, and a Resonance decided in an instant." />
   <meta property="og:image" content="https://tkaytyf.github.io/setsuna-kessen/assets/og.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -26,9 +27,9 @@
   <meta property="og:url" content="https://tkaytyf.github.io/setsuna-kessen/elements/metal.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Metal — Setsuna Kessen" />
-  <meta name="twitter:description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten concept-art fighters, and a Resonance decided in an instant." />
+  <meta name="twitter:description" content="Metal element fighters of Setsuna Kessen (刹那決戦). Ten fighters, and a Resonance decided in an instant." />
   <meta name="twitter:image" content="https://tkaytyf.github.io/setsuna-kessen/assets/og.jpg" />
-  <link rel="stylesheet" href="../styles.css?v=13" />
+  <link rel="stylesheet" href="../styles.css?v=14" />
 </head>
 <body class="element-page" data-element="metal">
   <div class="grain" aria-hidden="true"></div>
@@ -41,7 +42,7 @@
       <a href="../index.html#news">News</a>
       <a href="../index.html#story">Story</a>
       <a href="../index.html#fighters">Fighters</a>
-      <div class="dd">
+      <div class="dd dd-elements">
         <button class="dd-toggle" aria-expanded="false">Elements <i class="caret"></i></button>
         <div class="dd-menu">
           <a href="wind.html">Wind</a>
@@ -57,17 +58,14 @@
         </div>
       </div>
       <a href="../index.html#howtoplay">How to Play</a>
-      <div class="dd">
+      <div class="dd dd-game">
         <button class="dd-toggle" aria-expanded="false">Game <i class="caret"></i></button>
         <div class="dd-menu">
           <a href="../index.html#quiz">Find your element</a>
           <a href="../index.html#compare">Compare fighters</a>
           <a href="../index.html#modes">Game modes</a>
-          <a href="../index.html#arenas">Arenas</a>
           <a href="../index.html#map">Aurel Bay map</a>
           <a href="../index.html#wallpapers">Wallpapers</a>
-          <a href="../index.html#features">Features</a>
-          <a href="../index.html#devlog">Patch notes</a>
           <a href="../index.html#roadmap">Roadmap</a>
         </div>
       </div>
@@ -75,7 +73,7 @@
       <a href="../index.html#community">Community</a>
     </nav>
     <div class="topbar-right">
-      <a href="#" class="pill-cta" data-roblox>Play now</a>
+      <a href="#" class="pill-cta" data-roblox aria-disabled="true">Coming soon</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
@@ -84,8 +82,7 @@
     <section class="el-hero">
       <div class="wrap">
         <figure class="el-banner art-frame reveal">
-          <img src="../assets/elements/metal-banner.webp" alt="Metal element banner, concept art" width="1600" height="580">
-          <span class="ph-tag">Concept art</span>
+          <img src="../assets/elements/metal-banner.webp" alt="Metal element banner" width="1600" height="580">
         </figure>
         <a class="el-back reveal" href="../index.html#fighters">← All fighters</a>
         <div class="el-heading reveal">
@@ -94,7 +91,7 @@
         </div>
         <p class="el-lore reveal">Metal Resonances harden what they touch. A coat becomes plate, a coin becomes a blade, and the fighter learns to choose, in one instant, what must not break.</p>
         <div class="el-swatches" id="elSwatches" aria-label="Element colors"></div>
-        <p class="el-count reveal">10 fighters · Concept art</p>
+        <p class="el-count reveal">10 fighters</p>
         <div class="rs-grid" id="elementGrid"></div>
       </div>
     </section>
@@ -106,10 +103,11 @@
       <a href="../index.html#fighters">Fighters</a>
       <a href="../index.html#wallpapers">Wallpapers</a>
       <a href="../index.html#codes">Codes</a>
-      <a href="#" data-discord>Discord</a>
+      <a href="https://discord.gg/GZBsWsKGDt" target="_blank" rel="noopener" data-discord>Discord</a>
     </nav>
     <div class="footer-main">
       <a href="../index.html" class="footer-logo" aria-label="Setsuna Kessen home"><span class="brand-logo" role="img" aria-label="Setsuna Kessen"></span></a>
+      <nav class="legal-links"><a href="../privacy.html">Privacy notice</a><a href="https://discord.gg/GZBsWsKGDt" target="_blank" rel="noopener" data-discord>Contact (Discord)</a></nav>
       <p class="legal">© <span id="year"></span> <span data-game-name>Setsuna Kessen</span>. An independent game on Roblox. Not affiliated with, sponsored or endorsed by Roblox Corporation.</p>
     </div>
   </footer>
@@ -125,7 +123,6 @@
           <h3 id="fmName"></h3>
           <span class="fm-role" id="fmRole" hidden></span>
           <p class="fm-num" id="fmNum"></p>
-          <span class="rs-concept">Concept art</span>
           <div class="fm-abilities">
             <p class="fm-ab-title">Abilities</p>
             <div class="ab-row" id="fmKit" role="tablist" aria-label="Abilities"></div>
@@ -142,6 +139,6 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="../script.js?v=13"></script>
+  <script src="../script.js?v=14"></script>
 </body>
 </html>
