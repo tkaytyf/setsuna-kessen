@@ -4576,6 +4576,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if ($("#rosterGrid")) renderRoster();
   if ($("#elementGrid")) renderElementPage();
   renderElementSwatches();
+  renderElementMatchups();
   if ($("#codesList")) renderCodes();
   if ($("#modeTabs")) renderModes();
   initQuiz(); initCompare(); initMap();
@@ -4586,7 +4587,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ---------- v13: official move numbers, quiz, compare, map, community ---------- */
 const FIGHTER_MOVES_SOURCE = {"source":"Setsuna Kessen M1 scripts (real in-game numbers, pre-playtest)","fighters":[{"id":"Tovin","name":"Tovin Rusk","resonance":"Shardmail","role":"All-rounder / midrange","moves":[{"key":"1","name":"Plate Throw","kind":"projectile","cooldown":6,"damage":70,"range":45},{"key":"2","name":"Shell Up","kind":"shield","cooldown":10,"damage":0,"range":0,"duration":3,"recast":{"name":"Shell Shatter","damage":90}},{"key":"3","name":"Rib Spike","kind":"melee","cooldown":8,"damage":95,"range":5},{"key":"4","name":"Scatter Step","kind":"dash","cooldown":9,"damage":0,"range":24}],"awakening":{"key":"G","name":"Kiln Break","kind":"detonate","cooldown":0,"damage":140,"range":16,"duration":9}},{"id":"Jastel","name":"Jastel Vohl","resonance":"","role":"Rushdown","moves":[{"key":"1","name":"Hook Chain","kind":"melee","cooldown":8,"damage":50,"range":14},{"key":"2","name":"Last Link","kind":"detonate","cooldown":12,"damage":0,"range":0},{"key":"3","name":"Sweep Weight","kind":"melee","cooldown":7,"damage":75,"range":6},{"key":"4","name":"Chain Rush","kind":"dash","cooldown":9,"damage":0,"range":10}],"awakening":{"key":"G","name":"Burning Circuit","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9,"finisher":{"name":"Circuit Ring","damage":110}}},{"id":"Kald","name":"Kald Eschen","resonance":"","role":"Tank","moves":[{"key":"1","name":"Living Pavise","kind":"shield","cooldown":8,"damage":0,"range":0,"duration":4},{"key":"2","name":"Close the Lane","kind":"melee","cooldown":12,"damage":60,"range":8},{"key":"3","name":"Regrowth","kind":"buff","cooldown":14,"damage":0,"range":0},{"key":"4","name":"Root Plant","kind":"zone","cooldown":10,"damage":0,"range":4,"duration":8,"recast":{"name":"Recall Pavise","damage":0}}],"awakening":{"key":"G","name":"Full Canopy","kind":"shield","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Nedi","name":"Nedi Rime","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Throw Mirror","kind":"zone","cooldown":8,"damage":0,"range":12,"duration":10},{"key":"2","name":"Shatter Swap","kind":"teleport","cooldown":10,"damage":0,"range":45},{"key":"3","name":"Opposite Cut","kind":"melee","cooldown":7,"damage":80,"range":7},{"key":"4","name":"Bait Shatter","kind":"buff","cooldown":13,"damage":0,"range":0}],"awakening":{"key":"G","name":"Broken Reflection","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Pixa","name":"Pixa Noll","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Pocket Dark","kind":"zone","cooldown":9,"damage":0,"range":8,"duration":3},{"key":"2","name":"Crouch Step","kind":"teleport","cooldown":10,"damage":0,"range":25},{"key":"3","name":"Low Cut","kind":"melee","cooldown":6,"damage":70,"range":6},{"key":"4","name":"Snuff Field","kind":"zone","cooldown":14,"damage":0,"range":0,"duration":6}],"awakening":{"key":"G","name":"Total Snuff","kind":"zone","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Sael","name":"Sael Orin","resonance":"","role":"Support","moves":[{"key":"1","name":"Still Banner","kind":"zone","cooldown":12,"damage":0,"range":0,"duration":8},{"key":"2","name":"Soft Landing","kind":"buff","cooldown":8,"damage":0,"range":30},{"key":"3","name":"Low Ceiling","kind":"zone","cooldown":10,"damage":0,"range":0,"duration":5},{"key":"4","name":"Banner Shift","kind":"teleport","cooldown":14,"damage":0,"range":60}],"awakening":{"key":"G","name":"Held Ground","kind":"zone","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Sirae","name":"Sirae Holt","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Ember Bolt","kind":"projectile","cooldown":6,"damage":60,"range":45},{"key":"2","name":"Coil Shot","kind":"projectile","cooldown":9,"damage":85,"range":45},{"key":"3","name":"Ember Bloom","kind":"detonate","cooldown":11,"damage":0,"range":0},{"key":"4","name":"Ember Drop","kind":"dash","cooldown":8,"damage":0,"range":10}],"awakening":{"key":"G","name":"Full Coil","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Tamsin","name":"Tamsin Orel","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Silent Needles","kind":"projectile","cooldown":6,"damage":25,"range":50},{"key":"2","name":"Lane Pin","kind":"zone","cooldown":10,"damage":0,"range":14,"duration":6},{"key":"3","name":"Pressure Break","kind":"detonate","cooldown":12,"damage":0,"range":0},{"key":"4","name":"Draft Cut","kind":"dash","cooldown":8,"damage":0,"range":12}],"awakening":{"key":"G","name":"Held Breath","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Tesen","name":"Tesen Wynn","resonance":"","role":"Trickster","moves":[{"key":"1","name":"Flare Coin","kind":"projectile","cooldown":7,"damage":20,"range":22},{"key":"2","name":"Look-Away","kind":"dash","cooldown":6,"damage":60,"range":12},{"key":"3","name":"False Tell","kind":"projectile","cooldown":10,"damage":0,"range":20,"recast":{"name":"False Tell Blink","damage":0}},{"key":"4","name":"Glint Guard","kind":"buff","cooldown":12,"damage":0,"range":0}],"awakening":{"key":"G","name":"All Eyes","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9}},{"id":"Varek","name":"Varek Ashe","resonance":"","role":"Ranged (zoner)","moves":[{"key":"1","name":"Cinder Pitch","kind":"projectile","cooldown":6,"damage":70,"range":45},{"key":"2","name":"Ash Wall","kind":"zone","cooldown":12,"damage":0,"range":8,"duration":5},{"key":"3","name":"Searing Fan","kind":"melee","cooldown":8,"damage":80,"range":10},{"key":"4","name":"Ember Rise","kind":"dash","cooldown":10,"damage":0,"range":12}],"awakening":{"key":"G","name":"Ashwake","kind":"buff","cooldown":0,"damage":0,"range":0,"duration":9,"finisher":{"name":"Ashwake Burst","damage":140}}}]};
-const AUREL_BAY_MAP = {"city":"Aurel Bay","note":"Layout for the interactive site map. Positions are percentages of the map image (x from left, y from top). Status: 'building' = in progress, 'planned' = coming later. Only Academy Plaza is being built first.","palette":{"navy":"#141C2D","slate":"#19191C","gold":"#C8AA6E","road":"#2D2D32"},"districts":[{"id":"academy-plaza","name":"Academy Plaza","x":50,"y":38,"status":"building","blurb":"The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.","features":["Safe spawn at the academy gates","Mode queue spots","Tournament stage","Fountain hangout (no fighting)"]},{"id":"academy-hill","name":"Academy Hill","x":50,"y":14,"status":"planned","blurb":"The academy campus on the hill behind the plaza, with training grounds and the courtyard.","features":["Training grounds","Academy courtyard (safe zone)"]},{"id":"harbor","name":"Gold Harbor","x":22,"y":78,"status":"planned","blurb":"Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.","features":["Container maze","Pier lookout"]},{"id":"market","name":"Lantern Market","x":78,"y":62,"status":"planned","blurb":"Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.","features":["Shop stalls","Rooftop chase routes"]},{"id":"skyline","name":"Skyline Ward","x":80,"y":24,"status":"planned","blurb":"Tall towers and rooftop bridges for vertical, dash-heavy fights.","features":["Rooftop bridges","Highest lookout in the city"]},{"id":"old-quarter","name":"Old Quarter","x":20,"y":34,"status":"planned","blurb":"Stone streets and a ruined shrine where live-event rifts open.","features":["Rift event zone","Shrine ruins"]}],"arenas":[{"name":"Training Arena","size":"120x120 studs","mode":"Practice vs dummies","status":"building"},{"name":"Duel Arena","size":"120x120 studs","mode":"Ranked Duels 1v1","status":"planned"},{"name":"Squad Arena","size":"about 200x200 studs","mode":"3v3","status":"planned"},{"name":"Legion Arena","size":"about 260x260 studs","mode":"Legion War 5v5","status":"planned"}]};
+const ELEMENT_MATCHUPS = {"rule":"Soft counter: +5% damage dealt to a fighter whose element you beat. No effect on cooldowns, health, or meter. Starting balance for Luau Scripter, not locked. Light and Shadow are mutual counters: each deals +5% to the other, so both appear in each other's beats and weakTo on purpose.","mutualCounters":[["Light","Shadow"]],"matchups":{"Flame":{"beats":["Nature","Ice"],"weakTo":["Water","Earth"]},"Water":{"beats":["Flame","Earth"],"weakTo":["Ice","Lightning"]},"Ice":{"beats":["Water","Wind"],"weakTo":["Flame","Metal"]},"Lightning":{"beats":["Water","Metal"],"weakTo":["Earth","Nature"]},"Wind":{"beats":["Nature","Shadow"],"weakTo":["Ice","Light"]},"Earth":{"beats":["Lightning","Flame"],"weakTo":["Water","Nature"]},"Metal":{"beats":["Ice","Light"],"weakTo":["Lightning","Shadow"]},"Nature":{"beats":["Earth","Lightning"],"weakTo":["Flame","Wind"]},"Light":{"beats":["Shadow","Wind"],"weakTo":["Metal","Shadow"]},"Shadow":{"beats":["Light","Metal"],"weakTo":["Wind","Light"]}},"why":{"Flame>Nature":"burns through vines","Flame>Ice":"melts it","Water>Flame":"douses it","Water>Earth":"erodes stone","Ice>Water":"freezes it solid","Ice>Wind":"frost stills the air","Lightning>Water":"conducts through it","Lightning>Metal":"arcs through armor","Wind>Nature":"scatters seeds and leaves","Wind>Shadow":"clears smoke cover","Earth>Lightning":"grounds the charge","Earth>Flame":"smothers it","Metal>Ice":"shatters it","Metal>Light":"polished plate reflects it","Nature>Earth":"roots crack stone","Nature>Lightning":"wood does not conduct","Light>Shadow":"lights up hiding spots","Light>Wind":"glare reads fast feints","Shadow>Light":"swallows it","Shadow>Metal":"slips through armor gaps","Light<>Shadow":"mutual counters: light reveals hiding spots, shadow swallows it"}};
+const AUREL_BAY_MAP = {"city":"Aurel Bay","note":"Layout for the interactive site map. Positions are percentages of the map image (x from left, y from top). Status: 'building' = in progress, 'planned' = coming later. Only Academy Plaza is being built first. The Duel Arena in Academy Plaza is the arena being built; the Training Arena is planned on Academy Hill.","palette":{"navy":"#141C2D","slate":"#19191C","gold":"#C8AA6E","road":"#2D2D32"},"districts":[{"id":"academy-plaza","name":"Academy Plaza","x":50,"y":38,"status":"building","blurb":"The heart of Aurel Bay. The academy gates are the safe spawn, rooftops ring two open squares, and the tournament stage sits in the plaza.","features":["Safe spawn at the academy gates","Mode queue spots","Tournament stage","Fountain hangout (no fighting)"],"mood":"dusk (ClockTime 18), slate stone, navy banners, matte gold trim","lore":"The old plaza clock tower is stuck on 4:07. Studio build: matte stone tower, cream clock face with dark hands set to 4:07, no lights. A newer street clock nearby runs 7 seconds behind (planned).","arena":"Duel Arena (1v1 Ranked, 120x120 studs) beside the tournament stage"},{"id":"academy-hill","name":"Academy Hill","x":50,"y":14,"status":"planned","blurb":"The academy campus on the hill behind the plaza, with training grounds and the courtyard.","features":["Training grounds","Academy courtyard (safe zone)"],"mood":"clear morning, clean stone, gold-trimmed academy walls","lore":null,"arena":"Training Arena (practice vs dummies, 120x120 studs), the first one being built"},{"id":"harbor","name":"Gold Harbor","x":22,"y":78,"status":"planned","blurb":"Docks and cargo cranes on the bay. Tight lanes and stacked containers for close fights.","features":["Container maze","Pier lookout"],"mood":"dawn fog (higher Atmosphere density), wet docks, rust and navy containers","lore":null,"arena":"Squad Arena (3v3, about 200x200 studs) in the container yard, with cover lanes for team fights"},{"id":"market","name":"Lantern Market","x":78,"y":62,"status":"planned","blurb":"Narrow streets of stalls and warm street lamps. Shops and cosmetics vendors live here.","features":["Shop stalls","Rooftop chase routes"],"mood":"night, warm matte lantern glow (low LightEmission), narrow streets","lore":null,"arena":null},{"id":"skyline","name":"Skyline Ward","x":80,"y":24,"status":"planned","blurb":"Tall towers and rooftop bridges for vertical, dash-heavy fights.","features":["Rooftop bridges","Highest lookout in the city"],"mood":"noon, open sky, wind across the rooftops","lore":null,"arena":"Legion Arena (Legion War 5v5, about 260x260 studs) across linked rooftops, built for vertical dash fights"},{"id":"old-quarter","name":"Old Quarter","x":20,"y":34,"status":"planned","blurb":"Stone streets and a ruined shrine where live-event rifts open.","features":["Rift event zone","Shrine ruins"],"mood":"overcast and rainy, mossy stone, rifts in matte violet-black","lore":"This is where the seven seconds never fully ended. The rifts are time stutters.","arena":null}],"arenas":[{"name":"Training Arena","size":"120x120 studs","mode":"Practice vs dummies","status":"planned","district":"academy-hill","districtName":"Academy Hill"},{"name":"Duel Arena","size":"120x120 studs","mode":"Ranked Duels 1v1","status":"building","district":"academy-plaza","districtName":"Academy Plaza"},{"name":"Squad Arena","size":"about 200x200 studs","mode":"3v3","status":"planned","district":"harbor","districtName":"Gold Harbor"},{"name":"Legion Arena","size":"about 260x260 studs","mode":"Legion War 5v5","status":"planned","district":"skyline","districtName":"Skyline Ward"}]};
 const FIGHTER_MOVES = Object.fromEntries((FIGHTER_MOVES_SOURCE.fighters || []).map((f) => [kitSlug(f.name), f]));
 
 const ELEMENT_COLORS = {
@@ -4860,6 +4862,62 @@ function initCompare() {
 
 function statusLabel(s) { return s === "building" ? "Building now" : "Planned"; }
 
+function mapEsc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/* Strip World Builder / Studio notes so district panels stay player-facing.
+   Only removes jargon; does not invent copy. */
+function tidyPlayerCopy(s) {
+  s = String(s);
+  s = s.replace(/\s+/g, " ");
+  s = s.replace(/\s+([,.;:])/g, "$1");
+  s = s.replace(/,(?:,|\s)*/g, ", ");
+  s = s.replace(/\(\s+/g, "(");
+  s = s.replace(/\s+\)/g, ")");
+  s = s.replace(/,\s*\)/g, ")");
+  s = s.replace(/\(\s*,/g, "(");
+  s = s.replace(/\(\s*\)/g, "");
+  s = s.replace(/\)\s+(?=[A-Za-z])/g, "), ");
+  s = s.replace(/\s+\./g, ".");
+  s = s.replace(/\.\s*\./g, ".");
+  s = s.replace(/^\s*,\s*/g, "");
+  s = s.replace(/\s*,\s*$/g, "");
+  s = s.replace(/\s{2,}/g, " ");
+  return s.trim();
+}
+
+function playerFacingCopy(text, kind) {
+  if (text == null || text === "") return "";
+  let s = String(text);
+
+  // Whole Studio / internal-build sentences
+  s = s.replace(/\bStudio build:\s*[^.]*\./gi, "");
+  s = s.replace(/\bStudio\b[^.]*\./gi, "");
+
+  // Stud sizes first, so mixed parens like (1v1 Ranked, 120x120 studs) keep the mode
+  s = s.replace(/(?:,\s*)?(?:about\s+)?\d+\s*x\s*\d+\s*studs\b/gi, "");
+
+  // Technical-only parentheticals and (planned) asides — not mixed mode parens
+  s = s.replace(/\([^)]*\b(ClockTime|Atmosphere|LightEmission|Material)\b[^)]*\)/gi, "");
+  s = s.replace(/\(\s*planned\s*\)/gi, "");
+
+  // Finish words that are Studio material notes, not player sentences
+  s = s.replace(/\bmatte\b/gi, "");
+
+  if (kind === "mood") {
+    const technical = /\b(clocktime|atmosphere|lightemission|studio|studs?|slate|stone|banners?|trim|walls?|containers?|docks?|gold-trimmed|rust|violet-black|material|parts?)\b/i;
+    s = s.split(",").map((part) => part.trim()).filter((part) => part && !technical.test(part)).join(", ");
+  }
+
+  if (kind === "size") {
+    if (/\bstuds?\b/i.test(s) || !tidyPlayerCopy(s)) return "";
+  }
+
+  return tidyPlayerCopy(s);
+}
+
+
 function initMap() {
   const stage = $("#abMapStage"); if (!stage) return;
   const fallback = $("#abMapFallback");
@@ -4875,26 +4933,74 @@ function initMap() {
     const z = data.districts.find((d) => d.id === id) || data.districts[0];
     $$(".ab-pin", pins).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === z.id)));
     $$("#abDistricts button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.id === z.id)));
-    panel.innerHTML = `<span class="ab-status">${statusLabel(z.status)}</span>
-      <h3>${z.name}</h3>
-      <p>${z.blurb}</p>
-      <ul>${(z.features || []).map((f) => `<li>${f}</li>`).join("")}</ul>
-      <p class="ab-lore-link"><a href="${asset("lore/districts/" + z.id + ".html")}">Read the lore</a></p>`;
+    const bits = [
+      `<span class="ab-status">${mapEsc(statusLabel(z.status))}</span>`,
+      `<h3 id="district-${mapEsc(z.id)}">${mapEsc(z.name)}</h3>`,
+      `<p>${mapEsc(z.blurb)}</p>`
+    ];
+    const mood = playerFacingCopy(z.mood, "mood");
+    const lore = playerFacingCopy(z.lore, "lore");
+    const arena = playerFacingCopy(z.arena, "arena");
+    if (mood) bits.push(`<p class="ab-mood"><span class="ab-k">Mood</span>${mapEsc(mood)}</p>`);
+    if (lore) bits.push(`<p class="ab-lore"><span class="ab-k">Lore</span>${mapEsc(lore)}</p>`);
+    if (arena) bits.push(`<p class="ab-arena"><span class="ab-k">Arena</span>${mapEsc(arena)}</p>`);
+    if (z.features && z.features.length) {
+      bits.push(`<ul>${z.features.map((f) => `<li>${mapEsc(f)}</li>`).join("")}</ul>`);
+    }
+    panel.innerHTML = bits.join("\n      ");
     panel.hidden = false;
   };
 
-  pins.innerHTML = data.districts.map((z) =>
-    `<button type="button" class="ab-pin${z.status === "building" ? " is-building" : ""}" style="left:${z.x}%;top:${z.y}%" data-id="${z.id}" aria-label="${z.name}, ${statusLabel(z.status)}" aria-pressed="false"><span class="ab-pin-diamond" aria-hidden="true"></span></button>`
-  ).join("");
+  pins.innerHTML = data.districts.map((z) => {
+    const above = z.id === "harbor" ? " ab-pin--label-above" : "";
+    const building = z.status === "building" ? " is-building" : "";
+    return `<button type="button" class="ab-pin${building}${above}" style="left:${z.x}%;top:${z.y}%" data-id="${mapEsc(z.id)}" aria-label="${mapEsc(z.name)}, ${mapEsc(statusLabel(z.status))}" aria-pressed="false"><span class="ab-pin-diamond" aria-hidden="true"></span><span class="ab-pin-label">${mapEsc(z.name)}</span></button>`;
+  }).join("");
   list.innerHTML = data.districts.map((z) =>
-    `<li><button type="button" data-id="${z.id}" aria-pressed="false">${z.name} · ${statusLabel(z.status)}</button></li>`
+    `<li><button type="button" data-id="${mapEsc(z.id)}" aria-pressed="false">${mapEsc(z.name)} · ${mapEsc(statusLabel(z.status))}</button></li>`
   ).join("");
   pins.addEventListener("click", (e) => { const b = e.target.closest(".ab-pin"); if (b) select(b.dataset.id); });
   list.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) select(b.dataset.id); });
-  arenas.innerHTML = (data.arenas || []).map((a) =>
-    `<li><b>${a.name}</b><span class="ab-status">${statusLabel(a.status === "building" ? "building" : "planned")}</span><span>${a.mode}</span><span>${a.size}</span></li>`
-  ).join("");
+  arenas.innerHTML = (data.arenas || []).map((a) => {
+    const district = a.districtName || "";
+    const size = playerFacingCopy(a.size, "size");
+    return `<li><b>${mapEsc(a.name)}</b><span class="ab-status">${mapEsc(statusLabel(a.status))}</span>${district ? `<span class="ab-arena-district">${mapEsc(district)}</span>` : ""}<span>${mapEsc(a.mode)}</span>${size ? `<span>${mapEsc(size)}</span>` : ""}</li>`;
+  }).join("");
   select("academy-plaza");
+}
+
+function renderElementMatchups() {
+  const page = document.querySelector("body.element-page[data-element]");
+  if (!page) return;
+  const raw = page.getAttribute("data-element") || "";
+  const name = raw.charAt(0).toUpperCase() + raw.slice(1);
+  const data = ELEMENT_MATCHUPS;
+  const m = data && data.matchups && data.matchups[name];
+  if (!m) return;
+  const why = data.why || {};
+  const whyFor = (a, b) => why[a + ">" + b] || "";
+  const item = (attacker, defender, labelEl) => {
+    const w = whyFor(attacker, defender);
+    const href = asset("elements/" + labelEl.toLowerCase() + ".html");
+    return `<li><a href="${href}">${mapEsc(labelEl)}</a>${w ? " — " + mapEsc(w) : ""}</li>`;
+  };
+  const beats = (m.beats || []).map((b) => item(name, b, b)).join("");
+  const weak = (m.weakTo || []).map((b) => item(b, name, b)).join("");
+  const section = document.createElement("section");
+  section.className = "el-matchups";
+  section.setAttribute("aria-labelledby", "elMatchupsTitle");
+  section.innerHTML = `<h2 id="elMatchupsTitle">Matchups</h2>
+    <p class="el-matchups-rule">${mapEsc(data.rule || "")}</p>
+    <div class="el-matchups-cols">
+      <div><h3>Beats</h3><ul>${beats}</ul></div>
+      <div><h3>Weak to</h3><ul>${weak}</ul></div>
+    </div>`;
+  const grid = document.getElementById("elementGrid");
+  if (grid && grid.parentNode) grid.after(section);
+  else {
+    const wrap = document.querySelector(".el-hero .wrap") || document.querySelector(".el-hero");
+    if (wrap) wrap.appendChild(section);
+  }
 }
 
 function renderElementSwatches() {

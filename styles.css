@@ -2022,20 +2022,29 @@ body.element-page .footer { padding-bottom: 48px; }
 .ab-extra, .ab-stats { margin: 6px 0 0; font-size: 13px; color: #C8C8CE; }
 
 .ab-map-figure { margin: 0 0 28px; }
-.ab-map-stage { position: relative; display: block; border: 1px solid rgba(255,255,255,.42); background: #141C2D; }
+.ab-map-stage { position: relative; display: block; border: 1px solid rgba(255,255,255,.42); background: #141C2D; overflow: visible; }
 .ab-map-stage img, .ab-map-fallback { display: block; width: 100%; height: auto; }
 .ab-map-fallback { border: 1px solid rgba(255,255,255,.42); }
 .ab-map-stage[hidden], .ab-map-fallback[hidden] { display: none !important; }
 .ab-map-pins { position: absolute; inset: 0; }
+
+/* 44px tap target, centered on the JSON coordinate */
 .ab-pin {
   position: absolute;
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   transform: translate(-50%, -50%);
-  padding: 0; border: 0; background: transparent;
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
+  color: #F4F4F6;
 }
 .ab-pin-diamond {
-  display: block; width: 16px; height: 16px; margin: 14px auto 0;
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 14px auto 0;
   transform: rotate(45deg);
   background: #F4F4F6;
   border: 1px solid #fff;
@@ -2044,10 +2053,39 @@ body.element-page .footer { padding-bottom: 48px; }
 .ab-pin.is-building .ab-pin-diamond { width: 20px; height: 20px; margin-top: 12px; background: #fff; }
 .ab-pin[aria-pressed="true"] .ab-pin-diamond,
 .ab-pin:focus-visible .ab-pin-diamond { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* Name sits under the pin, wraps, and stays at least 13px on phones */
+.ab-pin-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 2px);
+  min-width: 8em;
+  max-width: 11em;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+  text-shadow: 0 1px 2px #141C2D, 0 0 6px #141C2D;
+}
+.ab-pin--label-above .ab-pin-label {
+  top: auto;
+  bottom: 100%;
+  transform: translate(-50%, -2px);
+}
+
 .ab-map-caption { margin: 10px 0 0; font-style: normal; letter-spacing: .04em; text-transform: uppercase; font-size: 11px; font-weight: 600; }
-.ab-map-panel { border: 1px solid rgba(255,255,255,.28); padding: 18px 20px; background: rgba(1,10,19,.4); margin: 0 0 28px; }
+.ab-map-panel { position: relative; z-index: 2; border: 1px solid rgba(255,255,255,.28); padding: 18px 20px; background: rgba(1,10,19,.92); margin: 0 0 28px; }
 .ab-map-panel h3 { margin: 0 0 8px; font: 400 28px/1.1 var(--f-display); color: #fff; text-transform: uppercase; }
 .ab-map-panel p { margin: 0 0 12px; color: #F4F4F6; }
+.ab-map-panel .ab-k { display: block; margin: 0 0 4px; color: rgba(244,244,246,.62); font: 600 11px/1.2 var(--f-body); letter-spacing: .14em; text-transform: uppercase; font-variant: small-caps; }
+.ab-map-panel .ab-mood,
+.ab-map-panel .ab-lore,
+.ab-map-panel .ab-arena { margin: 0 0 14px; font-size: 15px; line-height: 1.5; }
 .ab-status {
   display: inline-block; margin: 0 0 10px; padding: 4px 8px;
   border: 1px solid rgba(255,255,255,.45); color: #F4F4F6;
@@ -2058,15 +2096,51 @@ body.element-page .footer { padding-bottom: 48px; }
 .ab-map-panel li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; background: #fff; }
 .ab-districts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
 .ab-districts button {
-  padding: 8px 12px; background: transparent; color: #fff;
-  border: 1px solid rgba(255,255,255,.35); font: 600 12px/1 var(--f-body);
-  letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 12px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.35);
+  font: 600 13px/1.2 var(--f-body);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 .ab-districts button[aria-pressed="true"], .ab-districts button:hover { background: #fff; color: #010A13; }
 .ab-arenas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .ab-arenas li { border: 1px solid rgba(255,255,255,.28); padding: 14px 16px; }
 .ab-arenas b { display: block; color: #fff; margin: 0 0 6px; }
 .ab-arenas span { display: block; color: #F4F4F6; font-size: 13px; }
+.ab-arenas .ab-arena-district { color: rgba(244,244,246,.7); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 12px; }
+
+/* Element matchups (official copy from element-matchups.json) */
+.el-matchups { margin: 36px 0 16px; max-width: 40rem; }
+.el-matchups h2 { margin: 0 0 12px; font: 400 clamp(24px, 4vw, 36px)/1.1 var(--f-display); color: #F4F4F6; text-transform: uppercase; letter-spacing: .02em; }
+.el-matchups-rule { margin: 0 0 20px; font-size: 15px; line-height: 1.55; color: #D8CDB8; }
+.el-matchups-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+.el-matchups h3 { margin: 0 0 10px; font: 600 12px/1.2 var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: #A09B8C; }
+.el-matchups ul { margin: 0; padding: 0; list-style: none; }
+.el-matchups li { margin: 0 0 8px; font-size: 15px; line-height: 1.45; color: #F4F4F6; }
+.el-matchups a { color: #F4F4F6; text-decoration: underline; text-underline-offset: 2px; }
+.el-matchups a:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+  .el-matchups-cols { grid-template-columns: 1fr; }
+}
+
+/* Promo bar must not cover the district panel on phones */
+@media (max-width: 960px) {
+  .promo-bar {
+    position: static;
+    transform: none;
+    height: auto;
+    min-height: 92px;
+    z-index: 1;
+  }
+  .promo-bar.hide { transform: none; display: none; }
+  .footer { padding-bottom: 48px; }
+  .toast { bottom: 16px; }
+}
 
 .devlog-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
 .devlog-list li { border: 1px solid rgba(255,255,255,.28); padding: 18px 20px; }

@@ -1,5 +1,6 @@
 {
-  "rule": "Soft counter: +5% damage dealt to a fighter whose element you beat. No effect on cooldowns, health, or meter. Starting balance for Luau Scripter, not locked.",
+  "rule": "Soft counter: +5% damage dealt to a fighter whose element you beat. No effect on cooldowns, health, or meter. Starting balance for Luau Scripter, not locked. Light and Shadow are mutual counters: each deals +5% to the other, so both appear in each other's beats and weakTo on purpose.",
+  "mutualCounters": [["Light", "Shadow"]],
   "matchups": {
     "Flame":     {"beats": ["Nature", "Ice"],       "weakTo": ["Water", "Earth"]},
     "Water":     {"beats": ["Flame", "Earth"],      "weakTo": ["Ice", "Lightning"]},
@@ -22,6 +23,7 @@
     "Metal>Ice": "shatters it", "Metal>Light": "polished plate reflects it",
     "Nature>Earth": "roots crack stone", "Nature>Lightning": "wood does not conduct",
     "Light>Shadow": "lights up hiding spots", "Light>Wind": "glare reads fast feints",
-    "Shadow>Light": "swallows it", "Shadow>Metal": "slips through armor gaps"
+    "Shadow>Light": "swallows it", "Shadow>Metal": "slips through armor gaps",
+    "Light<>Shadow": "mutual counters: light reveals hiding spots, shadow swallows it"
   }
 }
