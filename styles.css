@@ -2645,3 +2645,20 @@ a.btn.wp-dl, .wp-dl { min-height: 44px !important; }
 }
 .promo-bar { position: static !important; transform: none !important; }
 .promo-bar.hide { display: none; }
+
+/* ===== v19: menu buttons at end of list (scroll with links); no extra Rewards art on phones ===== */
+@media (max-width: 960px) {
+  body.menu-open .mainnav.open::after { content: none !important; display: none !important; }
+  .mainnav .nav-discord, .mainnav.open .nav-discord,
+  .mainnav .nav-play, .mainnav.open .nav-play,
+  .mainnav a.nav-play.pill-cta {
+    position: static !important; left: auto !important; right: auto !important; bottom: auto !important; top: auto !important;
+    display: flex !important; width: 100% !important; flex: 0 0 auto !important; height: 48px !important; min-height: 48px !important;
+    justify-content: center; align-items: center; border-radius: 999px !important; z-index: auto !important; transform: none !important;
+  }
+  .mainnav .nav-discord { margin: 24px 0 12px !important; border-bottom: 1px solid #fff !important; }
+  .mainnav .nav-play { margin: 0 0 40px !important; }
+  .mainnav { padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important; }
+  .mainnav > a.nav-discord::after, .mainnav > a.nav-play::after { display: none !important; }
+  #rewardsArt { display: none !important; }
+}
