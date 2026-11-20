@@ -2662,3 +2662,6 @@ a.btn.wp-dl, .wp-dl { min-height: 44px !important; }
   .mainnav > a.nav-discord::after, .mainnav > a.nav-play::after { display: none !important; }
   #rewardsArt { display: none !important; }
 }
+
+/* v20: full news text on phones */
+@media (max-width: 960px) { .news-desc { display: block !important; -webkit-line-clamp: unset !important; overflow: visible !important; } }
